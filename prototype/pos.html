@@ -952,9 +952,12 @@ select.ai{appearance:auto}
 .ft .stl{fill:#fff; stroke:var(--chair-2); stroke-width:2} .ft .stli{fill:var(--chair)}
 .ft .colm{fill:var(--ctr)} .ft .colt{fill:var(--ctr-2)}
 .ft .ctin{fill:var(--ctr-in)} .ft .bbar{fill:var(--ctr)}
-.ft .lane{fill:rgba(255,255,255,.55); stroke:var(--chair-2); stroke-width:1.5; stroke-dasharray:6 6} .ft.open .lane{fill:rgba(255,90,31,.06); stroke:var(--busy); stroke-width:2; stroke-dasharray:none}
-.ft .dpath{stroke:var(--chair-2); stroke-width:2.5; stroke-linecap:round; stroke-dasharray:1 9} .ft .dmount{fill:var(--ctr-in)} .ft.open .dpath{stroke:var(--busy)}
-.ft .oche{stroke:var(--ink-2); stroke-width:4; stroke-linecap:round} .ft .db1{fill:var(--ink)} .ft .db2{fill:#fff} .ft .db4{fill:none; stroke:var(--busy); stroke-width:3} .ft .db3{fill:var(--busy)}
+.ft .lane{fill:var(--sofa); stroke:none} .ft.open .lane{stroke:var(--busy); stroke-width:3}
+.ft .db2{fill:var(--busy)} .ft .db1{fill:#fff} .ft .db3{fill:var(--ink)}
+.dlab{position:absolute; left:calc(28 * .1cqw); top:50%; transform:translateY(-50%); display:flex; flex-direction:column; align-items:flex-start; gap:6px; pointer-events:none}
+.dlab b{font-size:clamp(15px,2.1cqw,24px); font-weight:800; letter-spacing:-.02em; color:var(--ink); line-height:1; display:flex; align-items:center; gap:8px}
+.dlab .rdots i{background:var(--busy)}
+.dlab .mtag{position:static; transform:none}
 .ft .pwall{fill:var(--chair-2)}
 .ft.k-counter.fxc{pointer-events:none}
 .ft.k-counter .fxl{left:61%; top:38%; font-size:clamp(11px,1.2cqw,14px); color:#dde1e7}
@@ -1376,12 +1379,10 @@ function pieceSvg(it,bare){
     g=`<rect class="ctin" x="${L}" y="0" width="${w-L}" height="${B}" rx="6"/><path class="bbar" d="M ${L+t} 0 H ${w} V ${B-t} H ${w-bb} V ${bb} H ${L+t} Z"/>`
       +`<path class="ctr" d="M ${L} 0 H ${L+t} V ${B-t} H ${w} V ${B} H ${L} Z"/><path class="ctrt" d="M ${L+8} 8 H ${L+t-8} V ${B-t+8} H ${w-8} V ${B-8} H ${L+8} Z"/><path class="led" d="M ${L} 4 V ${B} H ${w-4}"/>`
       +(bare?'':counterSeats(it).map(p=>`<circle class="stl" cx="${p.lx}" cy="${p.ly}" r="17"/>`).join('')); }
-  else if(it.k==='darts'){ /* play area: board on the wall (right), throw line, the flight path between */
-    const by=h/2+12, bx=w-36, ox=54;
-    g=`<rect class="lane" x="1" y="1" width="${w-2}" height="${h-2}" rx="16"/>`
-      +`<line class="dpath" x1="${ox+12}" y1="${by}" x2="${bx-30}" y2="${by}"/><line class="oche" x1="${ox}" y1="${by-20}" x2="${ox}" y2="${by+20}"/>`
-      +`<rect class="dmount" x="${w-9}" y="${by-30}" width="6" height="60" rx="3"/>`
-      +`<circle class="db1" cx="${bx}" cy="${by}" r="25"/><circle class="db2" cx="${bx}" cy="${by}" r="19"/><circle class="db1" cx="${bx}" cy="${by}" r="13"/><circle class="db4" cx="${bx}" cy="${by}" r="8"/><circle class="db3" cx="${bx}" cy="${by}" r="3.5"/>`; }
+  else if(it.k==='darts'){ /* play zone with a dartboard icon on the right, centred */
+    const by=h/2, bx=w-28-30;
+    g=`<rect class="lane" x="1" y="1" width="${w-2}" height="${h-2}" rx="18"/>`
+      +`<circle class="db2" cx="${bx}" cy="${by}" r="30"/><circle class="db1" cx="${bx}" cy="${by}" r="24.5"/><circle class="db3" cx="${bx}" cy="${by}" r="18.5"/>`; }
   else if(it.k==='wall'){ g=`<rect class="pwall" x="0" y="0" width="${w}" height="${h}" rx="3"/>`; }
   else if(it.k==='col'){ g=`<rect class="colm" x="0" y="0" width="${w}" height="${h}" rx="4"/><rect class="colt" x="7" y="7" width="${w-14}" height="${h-14}" rx="2"/>`; }
   else if(it.k==='door'){ g=`<rect class="drw" x="0" y="${h-8}" width="${w}" height="8" rx="3"/><path class="dr" d="M ${w} ${h-8} A ${w} ${w} 0 0 0 0 ${h-8-w}"/><line x1="0" y1="${h-8}" x2="0" y2="${h-8-w}" stroke="#adb5c0" stroke-width="5" stroke-linecap="round"/>`; }
@@ -1406,7 +1407,8 @@ function planView(){
         return `<button class="seat ${st} ${S.sel===p.id?'sel':''} ${show(p.id)?'':'dim'}" data-sel="${p.id}" style="--x:${Math.round(q.x)};--y:${Math.round(q.y)};--nx:${q.nx};--ny:${q.ny}" aria-label="${esc(tname(p.id))} · ${LBL[st]}${o?' · '+fmt(total(o)):''}">${p.i}${o?`<span class="sp">${fmt(total(o))}</span>`:''}</button>`; }).join('');
     }
     const o=S.orders[it.id], st=status(it.id), nr=o?savedRounds(o):0;
-    const lab=it.k==='sofa'||it.k==='darts'?`<b class="nm">${esc(t.n)}</b>`:`<b>${esc(t.n)}</b>`;
+    const lab=it.k==='sofa'?`<b class="nm">${esc(t.n)}</b>`:`<b>${esc(t.n)}</b>`;
+    if(it.k==='darts') return `<button class="ft k-darts ${st} ${S.sel===it.id?'sel':''} ${show(it.id)?'':'dim'}" data-sel="${it.id}" style="${pos(it)}" aria-label="${esc(tname(it.id))} · ${LBL[st]}${o?' · '+fmt(total(o)):''}">${pieceSvg(it)}<span class="dlab"><b>${esc(t.n)}${nr>1?`<span class="rdots">${'<i></i>'.repeat(Math.min(6,nr))}</span>`:''}</b>${o?`<span class="mtag">${fmt(total(o))}<i>${dur(o)}</i></span>`:''}</span></button>`;
     return `<button class="ft k-${it.k} ${st} ${S.sel===it.id?'sel':''} ${show(it.id)?'':'dim'}" data-sel="${it.id}" style="${pos(it)};${topVars(it)}" aria-label="${esc(tname(it.id))} · ${LBL[st]}${o?' · '+fmt(total(o))+' · '+nr+' raunde':''}">${pieceSvg(it)}
       <span class="plab">${lab}${nr>1?`<span class="rdots" title="${nr} raunde">${'<i></i>'.repeat(Math.min(6,nr))}</span>`:''}</span>${o?`<span class="mtag">${fmt(total(o))}<i>${dur(o)}</i></span>`:''}</button>`;
   }).join('');
