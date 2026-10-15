@@ -18,7 +18,7 @@
   color-scheme:light;
   --bg:#f2f2f0; --card:#ffffff; --ink:#121212; --ink-2:#45464a; --mute:#6f7176; --line:#e3e3e0; --soft:#ededeb;
   --blue:#121212; --blue-2:#000000; --blue-soft:#ececea; --busy:#ff5a1f; --busy-2:#e8460e; --busy-ink:#ffffff;
-  --floor:#e7e6e2; --wall:#121212; --chair:#d3d2ce; --chair-2:#b7b6b1; --top:#ffffff; --top-2:#cfcec9;
+  --floor:#ecebe7; --wall:#d4d3ce; --chair:#d3d2ce; --chair-2:#b7b6b1; --top:#ffffff; --top-2:#cfcec9;
   --orange:#121212; --orange-soft:#fff0e8; --ghost:#d6d6d2; --red:#e23b3b; --green:#1f9d55; --green-soft:#e6f5ec;
   --font:"Plus Jakarta Sans","Segoe UI",system-ui,-apple-system,sans-serif;
   --r:16px; --sh:0 1px 2px rgba(18,18,18,.05), 0 4px 16px rgba(18,18,18,.06);
@@ -62,7 +62,7 @@ h1,h2,h3{margin:0; letter-spacing:-.02em}
 .split{display:grid; grid-template-columns:minmax(0,1fr) 400px; gap:28px; align-items:start}
 
 /* tables screen */
-.th{display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:24px}
+.th{display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:20px}
 .th h1{font-size:28px; font-weight:800}
 .filters{display:flex; gap:10px; flex-wrap:wrap}
 .f{height:46px; padding:0 16px; border-radius:12px; background:var(--card); white-space:nowrap; font-weight:700; font-size:15px; color:var(--ink-2); display:flex; align-items:center; gap:8px}
@@ -962,8 +962,8 @@ select.ai{appearance:auto}
 }
 
 /* ---- floor plan ---- */
-.room{position:relative; container-type:inline-size; aspect-ratio:1000/var(--rh,620); border-radius:22px; background:var(--floor,#efe2cc); box-shadow:inset 0 0 0 8px var(--wall,#3b322b), var(--sh); overflow:hidden; user-select:none; -webkit-user-select:none}
-.room::before{content:""; position:absolute; inset:8px; border-radius:14px; background-image:linear-gradient(90deg, rgba(0,0,0,.05) 1px, transparent 1px); background-size:3.2cqw 100%; pointer-events:none}
+.room{position:relative; container-type:inline-size; aspect-ratio:1000/var(--rh,620); border-radius:22px; background:var(--floor,#efe2cc); box-shadow:inset 0 0 0 1.5px var(--wall,#3b322b); overflow:hidden; user-select:none; -webkit-user-select:none}
+.room::before{content:""; position:absolute; inset:0; border-radius:22px; background-image:linear-gradient(90deg, rgba(0,0,0,.05) 1px, transparent 1px); background-size:3.2cqw 100%; pointer-events:none}
 .room.arr{max-width:min(100%, calc((100vh - 300px) * 1000 / var(--rh,620))); margin-inline:auto}
 .room.arr::before{background-image:radial-gradient(circle, rgba(80,60,40,.22) 1px, transparent 1.4px); background-size:2cqw 2cqw}
 .ft{position:absolute; left:calc((var(--x) - var(--w)/2) * .1cqw); top:calc((var(--y) - var(--h)/2) * .1cqw); width:calc(var(--w) * .1cqw); height:calc(var(--h) * .1cqw); padding:0; display:block; touch-action:none; transition:filter .15s, opacity .15s, transform .12s}
@@ -980,8 +980,8 @@ select.ai{appearance:auto}
 .ft .colm{fill:#3b2e25} .ft .colt{fill:#4e3d31}
 .ft .ctin{fill:#5b4c40} .ft .bbar{fill:#3a2f27}
 .ft .lane{fill:rgba(255,255,255,.55); stroke:var(--chair-2); stroke-width:2; stroke-dasharray:8 6} .ft.open .lane{fill:rgba(255,90,31,.10); stroke:var(--busy)}
-.ft .oche{stroke:var(--ink); stroke-width:4; stroke-linecap:round} .ft .dmach{fill:#121212} .ft .db1{fill:#121212} .ft .db2{fill:#e23b3b} .ft .db3{fill:#fff}
-.ft .pwall{fill:var(--wall)}
+.ft .oche{stroke:var(--ink-2); stroke-width:2.5; stroke-linecap:round} .ft .dmach{fill:#121212} .ft .db1{fill:#121212} .ft .db2{fill:#e23b3b} .ft .db3{fill:#fff}
+.ft .pwall{fill:var(--chair-2)}
 .ft.k-counter.fxc{pointer-events:none}
 .ft.k-counter .fxl{left:61%; top:38%; font-size:clamp(11px,1.2cqw,14px); color:#e9dccb}
 .seat{position:absolute; left:calc(var(--x) * .1cqw); top:calc(var(--y) * .1cqw); width:max(30px,3.6cqw); height:max(30px,3.6cqw); transform:translate(-50%,-50%); border-radius:50%; background:var(--top,#faf4e9); box-shadow:inset 0 0 0 2px var(--chair-2,#b9a68b), 0 2px 6px rgba(18,18,18,.12); display:grid; place-items:center; font-weight:800; font-size:clamp(12px,1.35cqw,15px); color:var(--ink-2); z-index:2; transition:transform .12s}
@@ -1001,6 +1001,11 @@ select.ai{appearance:auto}
 .fc .fa{font-size:clamp(15px,1.95cqw,21px); font-weight:800; letter-spacing:-.02em; white-space:nowrap}
 .fc .fm{font-size:clamp(12px,1.35cqw,15px); font-weight:700; color:var(--mute); white-space:nowrap}
 .ft.free .fc .fn{color:var(--ink-2)}
+/* free: just the number on the table, nothing floating over it */
+.room:not(.arr) .ft.free .fc{background:none; box-shadow:none; padding:0; min-width:0}
+.room:not(.arr) .ft.free .fc .fm{display:none}
+.room:not(.arr) .ft.free .fc .fn{color:var(--mute); font-weight:700}
+.room:not(.arr) .ft.k-sofa.free .fc .fn,.room:not(.arr) .ft.k-darts.free .fc .fn{font-size:clamp(12px,1.35cqw,15px); text-transform:uppercase; letter-spacing:.06em}
 .ft.open .fc{background:var(--busy-2); color:var(--busy-ink,#fff); box-shadow:0 6px 18px rgba(232,70,14,.30)}
 .ft.bill .fc{background:#121212; color:#fff; box-shadow:0 6px 18px rgba(0,0,0,.25)}
 .ft.bill .fc .fn{color:#fff} .ft.open .fc .fn{color:var(--busy-ink,#fff)}
@@ -1113,18 +1118,18 @@ const PLAN_KINDS={
   sq4:{w:168,h:168,s:4,l:'Katrore · 4 karrige'}, sq2:{w:164,h:88,s:2,l:'Katrore · 2 karrige'},
   round:{w:176,h:176,s:4,l:'E rrumbullakët'}, rect:{w:240,h:168,s:6,l:'E gjatë · 6 karrige'},
   high:{w:150,h:150,s:4,l:'E lartë · 4 stola'}, stand:{w:130,h:130,s:3,l:'Në këmbë · 3 stola'},
-  sofa:{w:280,h:200,s:6,l:'Divanë · 6 vende'}, counter:{w:232,h:236,s:3,l:'Banaku'}, darts:{w:240,h:112,s:4,l:'Kënd i lojës'},
-  col:{w:48,h:48,l:''}, wall:{w:14,h:170,l:''}, door:{w:104,h:104,l:'Hyrja'}};
+  sofa:{w:240,h:168,s:6,l:'Divanë · 6 vende'}, counter:{w:232,h:236,s:6,l:'Banaku'}, darts:{w:240,h:96,s:4,l:'Kënd i lojës'},
+  col:{w:48,h:48,l:''}, wall:{w:6,h:180,l:''}, door:{w:104,h:104,l:'Hyrja'}};
 const TABLE_SHAPES=['sq4','sq2','round','rect','high','stand'];
 const PLAN_GROUP=k=>k==='sofa'||k==='counter'||k==='darts'?k:'t';
 /* Default room from the owner's floor plan (WC left out): 6 tables, entrance on the left wall,
    the bar counter pushed up into the top-right corner (people sit and order there, every stool is its own tab),
    darts below it, and the separe in the bottom-right nook behind a short partition wall. */
-const DEF_PLAN={h:565,
-  tables:[{id:'t1',no:1,k:'sq4',x:132,y:92,r:0},{id:'t2',no:2,k:'sq4',x:409,y:139,r:0},{id:'t3',no:3,k:'sq4',x:256,y:299,r:0},
-          {id:'t4',no:4,k:'sq4',x:541,y:327,r:0},{id:'t5',no:5,k:'sq4',x:99,y:452,r:0},{id:'t6',no:6,k:'sq4',x:397,y:461,r:0},
-          {id:'t7',no:1,k:'sofa',x:848,y:457,r:0},{id:'t8',no:1,k:'counter',x:876,y:126,r:0,seats:3},{id:'t9',no:1,k:'darts',x:862,y:302,r:0}],
-  fixtures:[{id:'door',k:'door',x:56,y:238,r:90},{id:'wall1',k:'wall',x:697,y:478,r:0}]};
+const DEF_PLAN={h:670,
+  tables:[{id:'t1',no:1,k:'sq4',x:132,y:104,r:0},{id:'t2',no:2,k:'sq4',x:409,y:157,r:0},{id:'t3',no:3,k:'sq4',x:256,y:339,r:0},
+          {id:'t4',no:4,k:'sq4',x:541,y:370,r:0},{id:'t5',no:5,k:'sq4',x:99,y:530,r:0},{id:'t6',no:6,k:'sq4',x:397,y:545,r:0},
+          {id:'t7',no:1,k:'sofa',x:868,y:578,r:0},{id:'t8',no:1,k:'counter',x:876,y:157,r:0,seats:6},{id:'t9',no:1,k:'darts',x:862,y:370,r:0}],
+  fixtures:[{id:'door',k:'door',x:56,y:270,r:90},{id:'wall1',k:'wall',x:732,y:574,r:0}]};
 /* ---- data from the local server (injected into the page as window.__BOOT) ---- */
 const BOOT=window.__BOOT||{cfg:[],orders:[],sales:[],house:[],exp:[],ledger:[],rem:[],done:[],closings:[],stock:[],local:true,remote:false,info:{}};
 const DKEYS=new Set(['t','opened','from']);
@@ -1139,7 +1144,7 @@ const bootMap=c=>Object.fromEntries((BOOT[c]||[]).map(d=>[d.id,revive(d.data)]))
 const LS={ get(k,f){ try{ const v=localStorage.getItem(k); return v==null?f:v; }catch(e){ return f; } }, set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} } };
 
 const CFG={pin:'1234', plan:JSON.parse(JSON.stringify(DEF_PLAN)), staff:['Stafi'], salary:{Stafi:0},
-  accounts:[{id:'a_k1',name:'Klienti 1'},{id:'a_k2',name:'Klienti 2'},{id:'a_k3',name:'Klienti 3'}]};
+  accounts:[]};
 const TABLES=[], T={};
 function buildTables(){
   TABLES.length=0; Object.keys(T).forEach(k=>delete T[k]);
@@ -1147,8 +1152,8 @@ function buildTables(){
   pl.filter(t=>PLAN_GROUP(t.k)==='t').sort((a,b)=>a.no-b.no).forEach(t=>TABLES.push({id:t.id, n:String(t.no), no:t.no, k:t.k, z:'', s:(PLAN_KINDS[t.k]||PLAN_KINDS.sq4).s}));
   pl.filter(t=>t.k==='sofa').sort((a,b)=>a.no-b.no).forEach(t=>TABLES.push({id:t.id, n:sofas>1?'Separe '+t.no:'Separe', no:t.no, k:'sofa', z:'', s:PLAN_KINDS.sofa.s}));
   const ctrs=pl.filter(t=>t.k==='counter').length, dts=pl.filter(t=>t.k==='darts').length;
-  pl.filter(t=>t.k==='darts').sort((a,b)=>a.no-b.no).forEach(t=>TABLES.push({id:t.id, n:dts>1?'Darts '+t.no:'Darts', no:t.no, k:'darts', z:'', s:PLAN_KINDS.darts.s}));
-  pl.filter(t=>t.k==='counter').sort((a,b)=>a.no-b.no).forEach(t=>{ for(let i=1;i<=(t.seats||3);i++) TABLES.push({id:t.id+'s'+i, n:'B'+i, no:i, k:'stool', parent:t.id, z:'', s:1, nm:(ctrs>1?'Banaku '+t.no:'Banaku')+' · '+i}); });
+  pl.filter(t=>t.k==='darts').sort((a,b)=>a.no-b.no).forEach(t=>TABLES.push({id:t.id, n:dts>1?'Pikado '+t.no:'Pikado', no:t.no, k:'darts', z:'', s:PLAN_KINDS.darts.s}));
+  pl.filter(t=>t.k==='counter').sort((a,b)=>a.no-b.no).forEach(t=>{ for(let i=1;i<=(t.seats||6);i++) TABLES.push({id:t.id+'s'+i, n:'B'+i, no:i, k:'stool', parent:t.id, z:'', s:1, nm:(ctrs>1?'Banaku '+t.no:'Banaku')+' · '+i}); });
   TABLES.push({id:'take', n:'Merr me veti', z:'-', take:true});
   TABLES.forEach(t=>T[t.id]=t);
 }
@@ -1298,22 +1303,22 @@ function tablesView(){
   if(S.arrange&&S.admin) return `<div class="th"><h1>Rregullo sallën</h1></div><div class="plan-wrap">${planView()}</div>`;
   return `<div class="split"><div>
       <div class="th"><h1>Tavolinat</h1>
-        <div class="filters">${F('all','Të gjitha')}${F('open','Të zëna')}${F('free','Të lira')}<button class="f facc" data-filter="acct" aria-pressed="${S.filter==='acct'}">Klientët${openAcc?`<em>${openAcc}</em>`:''}</button></div>
         <div class="th-r"><button class="take" data-act="qexp">${I.cart}Shto shpenzim</button><button class="take" data-open="take">${I.bag}Merr me veti</button></div></div>
-      ${S.filter==='acct'?accSec:zones}
+      ${zones}
     </div>${detail()}</div>`;
 }
 /* ---- floor plan ---- */
-const pdim=it=>{ const K=PLAN_KINDS[it.k]||PLAN_KINDS.sq4; return it.r%180?[K.h,K.w]:[K.w,K.h]; };
+/* size of a piece in plan units; the bar counter gets taller with every stool so they all sit along its side */
+const kdim=it=>{ const K=PLAN_KINDS[it.k]||PLAN_KINDS.sq4; return it.k==='counter'?{w:K.w,h:Math.max(180,Math.min(10,Math.max(1,it.seats||6))*46+24)}:{w:K.w,h:K.h}; };
+const pdim=it=>{ const K=kdim(it); return it.r%180?[K.h,K.w]:[K.w,K.h]; };
 /* Bar counter: L-shaped, closed behind (staff area enclosed by the back bar). Stools sit along the two outer sides. */
 function counterSeats(it){
-  const n=Math.max(1,it.seats||3), K=PLAN_KINDS.counter, B=K.h-56, nl=Math.min(n,4), nb=n-nl, out=[];
-  for(let i=0;i<nl;i++) out.push({lx:18, ly:B*(i+1)/(nl+1), nx:-1, ny:0});
-  for(let i=0;i<nb;i++) out.push({lx:44+(K.w-44)*(i+1)/(nb+1), ly:K.h-18, nx:0, ny:1});
+  const n=Math.max(1,Math.min(10,it.seats||6)), B=kdim(it).h, out=[];
+  for(let i=0;i<n;i++) out.push({lx:18, ly:12+(B-24)*(i+0.5)/n, nx:-1, ny:0});
   return out.map((p,i)=>({...p, i:i+1, id:it.id+'s'+(i+1)}));
 }
 function toPlan(it,lx,ly,nx,ny){ /* piece-local point/normal -> room coordinates */
-  const K=PLAN_KINDS[it.k], a=(it.r||0)*Math.PI/180, c=Math.cos(a), sn=Math.sin(a);
+  const K=kdim(it), a=(it.r||0)*Math.PI/180, c=Math.cos(a), sn=Math.sin(a);
   let x=lx-K.w/2, y=ly-K.h/2; if(it.m){ x=-x; nx=-nx; }
   return {x:it.x+x*c-y*sn, y:it.y+x*sn+y*c, nx:Math.round(nx*c-ny*sn), ny:Math.round(nx*sn+ny*c)};
 }
@@ -1324,7 +1329,7 @@ function chairs(cx,cy,ang,len){ /* one chair pushed against the table edge, faci
   return `<g transform="translate(${cx} ${cy}) rotate(${ang})"><rect class="ch" x="${-w/2}" y="${-d/2}" width="${w}" height="${d}" rx="10"/><rect class="chb" x="${-w/2}" y="${d/2-9}" width="${w}" height="9" rx="4.5"/></g>`;
 }
 function pieceSvg(it,bare){
-  const K=PLAN_KINDS[it.k]||PLAN_KINDS.sq4, w=K.w, h=K.h, [bw,bh]=pdim(it);
+  const K=kdim(it), w=K.w, h=K.h, [bw,bh]=pdim(it);
   let g='';
   if(it.k==='sq4'){ const t=92, o=(w-t)/2; g=`${chairs(w/2,o-20,0)}${chairs(w/2,h-o+20,180)}${chairs(o-20,h/2,-90)}${chairs(w-o+20,h/2,90)}<rect class="tsh" x="${o+3}" y="${o+5}" width="${t}" height="${t}" rx="12"/><rect class="tt" x="${o}" y="${o}" width="${t}" height="${t}" rx="12"/>`; }
   else if(it.k==='sq2'){ const t=84, o=(w-t)/2; g=`${chairs(o-20,h/2,-90)}${chairs(w-o+20,h/2,90)}<rect class="tsh" x="${o+3}" y="${(h-t)/2+5}" width="${t}" height="${t}" rx="12"/><rect class="tt" x="${o}" y="${(h-t)/2}" width="${t}" height="${t}" rx="12"/>`; }
@@ -1336,15 +1341,15 @@ function pieceSvg(it,bare){
       return vertical
         ? `<rect class="frd" x="${x}" y="${y}" width="${sw}" height="${sh}" rx="8"/><rect class="sfb" x="${x+(x<w/2?4:sw-back-4)}" y="${y+arm}" width="${back}" height="${sh-2*arm}" rx="6"/>`+[0,1,2].map(i=>`<rect class="sf" x="${x<w/2?x+back+6:x+6}" y="${y+arm+4+i*((sh-2*arm-8)/3)}" width="${sw-back-12}" height="${(sh-2*arm-8)/3-4}" rx="8"/>`).join('')+`<rect class="fr" x="${x}" y="${y}" width="${sw}" height="${arm}" rx="6"/><rect class="fr" x="${x}" y="${y+sh-arm}" width="${sw}" height="${arm}" rx="6"/>`
         : `<rect class="frd" x="${x}" y="${y}" width="${sw}" height="${sh}" rx="8"/><rect class="sfb" x="${x+arm}" y="${y+4}" width="${sw-2*arm}" height="${back}" rx="6"/>`+[0,1].map(i=>`<rect class="sf" x="${x+arm+4+i*((sw-2*arm-8)/2)}" y="${y+back+6}" width="${(sw-2*arm-8)/2-4}" height="${sh-back-12}" rx="8"/>`).join('')+`<rect class="fr" x="${x}" y="${y}" width="${arm}" height="${sh}" rx="6"/><rect class="fr" x="${x+sw-arm}" y="${y}" width="${arm}" height="${sh}" rx="6"/>`; };
-    g=`<rect class="rug" x="44" y="40" width="${w-88}" height="${h-52}" rx="8"/>`
-      +sofa(0,8,66,h-8,true)+sofa(w-66,8,66,h-8,true)+sofa(78,0,w-156,66,false)
-      +`<rect class="tsh" x="${w/2-56+3}" y="${h/2-12+5}" width="112" height="76" rx="8"/><rect class="tt" x="${w/2-56}" y="${h/2-12}" width="112" height="76" rx="8"/>`;
+    g=`<rect class="rug" x="38" y="34" width="${w-76}" height="${h-44}" rx="8"/>`
+      +sofa(0,6,56,h-6,true)+sofa(w-56,6,56,h-6,true)+sofa(64,0,w-128,56,false)
+      +`<rect class="tsh" x="${w/2-44+3}" y="${h/2-6+5}" width="88" height="60" rx="8"/><rect class="tt" x="${w/2-44}" y="${h/2-6}" width="88" height="60" rx="8"/>`;
   }
   else if(it.k==='high'||it.k==='stand'){ const cx=w/2, cy=h/2, stool=(x,y)=>`<circle class="stl" cx="${x}" cy="${y}" r="17"/><circle class="stli" cx="${x}" cy="${y}" r="8"/>`;
     g = it.k==='high'
       ? [[cx,16+4],[cx,h-20],[20,cy],[w-20,cy]].map(([x,y])=>stool(x,y)).join('')+`<rect class="tsh" x="${cx-33}" y="${cy-30}" width="66" height="66" rx="8"/><rect class="tt" x="${cx-35}" y="${cy-35}" width="70" height="70" rx="8"/>`
       : [270,30,150].map(a=>{ const r=(a)*Math.PI/180; return stool(cx+Math.cos(r)*46,cy+Math.sin(r)*46); }).join('')+`<circle class="tsh" cx="${cx+3}" cy="${cy+5}" r="30"/><circle class="tt" cx="${cx}" cy="${cy}" r="30"/>`; }
-  else if(it.k==='counter'){ const t=56, L=44, B=h-56, bb=20;
+  else if(it.k==='counter'){ const t=56, L=44, B=h, bb=20;
     g=`<rect class="ctin" x="${L}" y="0" width="${w-L}" height="${B}" rx="6"/><path class="bbar" d="M ${L+t} 0 H ${w} V ${B-t} H ${w-bb} V ${bb} H ${L+t} Z"/>`
       +`<path class="ctr" d="M ${L} 0 H ${L+t} V ${B-t} H ${w} V ${B} H ${L} Z"/><path class="ctrt" d="M ${L+8} 8 H ${L+t-8} V ${B-t+8} H ${w-8} V ${B-8} H ${L+8} Z"/><path class="led" d="M ${L} 4 V ${B} H ${w-4}"/>`
       +(bare?'':counterSeats(it).map(p=>`<circle class="stl" cx="${p.lx}" cy="${p.ly}" r="17"/>`).join('')); }
@@ -1365,7 +1370,7 @@ function planView(){
   const fx=(pl.fixtures||[]).map(it=>`<div class="ft fx k-${it.k} ${A&&S.arrSel===it.id?'on':''}" ${A?`data-ft="${it.id}"`:''} style="${pos(it)}">${pieceSvg(it)}${PLAN_KINDS[it.k].l?`<span class="fxl">${PLAN_KINDS[it.k].l}</span>`:''}${tools(it)}</div>`).join('');
   const tb=pl.tables.map(it=>{
     const t=it.k==='counter'?{n:'Banaku'}:T[it.id]; if(!t) return '';
-    if(A) return `<div class="ft k-${it.k} free ${S.arrSel===it.id?'on':''}" data-ft="${it.id}" style="${pos(it)}">${pieceSvg(it)}<span class="fc"><span class="fn ${it.k==='sofa'||it.k==='counter'?'sep':''}">${esc(t.n)}</span><span class="fm">${it.k==='counter'?(it.seats||3)+' stola':PLAN_KINDS[it.k].l}</span></span>${tools(it)}</div>`;
+    if(A) return `<div class="ft k-${it.k} free ${S.arrSel===it.id?'on':''}" data-ft="${it.id}" style="${pos(it)}">${pieceSvg(it)}<span class="fc"><span class="fn ${it.k==='sofa'||it.k==='counter'?'sep':''}">${esc(t.n)}</span><span class="fm">${it.k==='counter'?(it.seats||6)+' stola':PLAN_KINDS[it.k].l}</span></span>${tools(it)}</div>`;
     if(it.k==='counter'){ const seats=counterSeats(it), busy=seats.filter(p=>S.orders[p.id]).length;
       return `<div class="ft k-counter fxc" style="${pos(it)}">${pieceSvg(it,true)}<span class="fxl">${esc(T[it.id+'s1']?T[it.id+'s1'].nm.split(' · ')[0]:'Banaku')}${busy?` · ${busy}/${seats.length}`:''}</span></div>`+seats.map(p=>{
         const q=toPlan(it,p.lx,p.ly,p.nx,p.ny), o=S.orders[p.id], st=status(p.id);
@@ -1375,7 +1380,7 @@ function planView(){
     return `<button class="ft k-${it.k} ${st} ${S.sel===it.id?'sel':''} ${show(it.id)?'':'dim'}" data-sel="${it.id}" style="${pos(it)}" aria-label="${esc(tname(it.id))} · ${LBL[st]}${o?' · '+fmt(total(o)):''}">${pieceSvg(it)}
       <span class="fc"><span class="fn ${it.k==='sofa'?'sep':''}">${esc(t.n)}</span>${o?`<span class="fa">${fmt(total(o))}</span><span class="fm">${dur(o)}</span>`:`<span class="fm">E lirë</span>`}</span></button>`;
   }).join('');
-  const bar=A?`<div class="arrbar"><p>Tërhiqi tavolinat, separenë, banakun dhe darts aty ku janë në lokal. Prek një për ta rrotulluar ose për t'i ndryshuar formën.</p>
+  const bar=A?`<div class="arrbar"><p>Tërhiqi tavolinat, separenë, banakun dhe pikadon aty ku janë në lokal. Prek një për ta rrotulluar ose për t'i ndryshuar formën.</p>
       <span class="rl">Thellësia e sallës</span><span class="step"><button data-act="proomh" data-dir="-40" aria-label="Më e cekët">${I.minus}</button><button data-act="proomh" data-dir="40" aria-label="Më e thellë">${I.plus}</button></span>
       <button class="btn pri" data-act="arrdone">${I.ok}Gati</button></div>`:'';
   return `${bar}<div class="room ${A?'arr':''}" style="--rh:${pl.h||620}">${fx}${tb}</div>
@@ -1418,12 +1423,12 @@ function planCount(kind,dir){
     let no=1; while(mine.some(t=>t.no===no)) no++;
     let n=pl.length+1; while(pl.some(t=>t.id==='t'+n)) n++;
     const k=sofa?'sofa':ctr?'counter':dt?'darts':'sq4', [x,y]=planFree(k);
-    pl.push(ctr?{id:'t'+n,no,k,x,y,r:0,seats:3}:{id:'t'+n,no,k,x,y,r:0}); buildTables(); saveCfg(); render(); toast(sofa?'U shtua një separe':ctr?'U shtua një banak':dt?'U shtua këndi i darts':`U shtua tavolina ${no}`); return;
+    pl.push(ctr?{id:'t'+n,no,k,x,y,r:0,seats:6}:{id:'t'+n,no,k,x,y,r:0}); buildTables(); saveCfg(); render(); toast(sofa?'U shtua një separe':ctr?'U shtua një banak':dt?'U shtua pikado':`U shtua tavolina ${no}`); return;
   }
   if(mine.length<=(kind==='t'?1:0)) return;
   const last=mine.slice().sort((a,b)=>b.no-a.no)[0];
   if(Object.keys(S.orders).some(id=>id===last.id||id.startsWith(last.id+'s'))){ toast(`${ctr?'Banaku':tname(last.id)} ka porosi të hapur`); return; }
-  pl.splice(pl.indexOf(last),1); if(S.sel===last.id) S.sel=null; buildTables(); saveCfg(); render(); toast(`${sofa?'Separeja':ctr?'Banaku':dt?'Darts':'Tavolina '+last.no} u hoq`);
+  pl.splice(pl.indexOf(last),1); if(S.sel===last.id) S.sel=null; buildTables(); saveCfg(); render(); toast(`${sofa?'Separeja':ctr?'Banaku':dt?'Pikado':'Tavolina '+last.no} u hoq`);
 }
 
 function detail(){
@@ -1466,8 +1471,7 @@ function detail(){
         ${o?`<button class="btn out" data-open="${id}">${I.plus}Raund i ri</button><button class="btn pri" data-pay="Kesh" data-id="${id}">${I.print}Printo faturën</button>`
            :`<button class="btn pri full" data-open="${id}">${I.plus}Hap porosi</button>`}
       </div>
-      ${o?`<div class="alt"><button data-repeat="${id}" ${savedRounds(o)?'':'disabled'}>${I.repeat}Përsërit raundin</button><button data-split="${id}">${I.split}Ndaj faturën</button><button data-pay="Kartelë" data-id="${id}">${I.card}Me kartelë</button><button data-house="${id}">${I.gift}Nga shtëpia</button></div>
-      <div class="alt one"><button class="to-acc" data-toacct="${id}">${I.user}Kaloje te klienti i rregullt</button></div>`:''}
+      ${o?`<div class="alt"><button data-repeat="${id}" ${savedRounds(o)?'':'disabled'}>${I.repeat}Përsërit raundin</button><button data-split="${id}">${I.split}Ndaj faturën</button><button data-pay="Kartelë" data-id="${id}">${I.card}Me kartelë</button><button data-house="${id}">${I.gift}Nga shtëpia</button></div>`:''}
     </div>
   </aside>`;
 }
@@ -1496,7 +1500,7 @@ function orderView(){
         :A?`<div class="btns"><button class="btn org full" data-act="save" ${n?'':'disabled'}>${I.ok}Ruaj në llogarinë e ${esc(ac.name)}</button></div>`
         :`<div class="btns"><button class="btn out" data-pay="Kesh" data-id="${id}" ${has?'':'disabled'}>${I.print}Printo faturën</button><button class="btn pri" data-act="save" ${n?'':'disabled'}>${I.ok}Ruaj raundin ${nextN}</button></div>
         <div class="alt"><button data-split="${id}" ${has?'':'disabled'}>${I.split}Ndaj faturën</button><button data-pay="Kartelë" data-id="${id}" ${has?'':'disabled'}>${I.card}Me kartelë</button></div>
-        <div class="alt"><button data-house="${id}" ${has?'':'disabled'}>${I.gift}Nga shtëpia</button><button class="to-acc" data-toacct="${id}" ${has?'':'disabled'}>${I.user}Te klienti</button></div>`}
+        <div class="alt one"><button data-house="${id}" ${has?'':'disabled'}>${I.gift}Nga shtëpia</button></div>`}
       </div>
     </aside></div>
     ${has?`<div class="mbar"><div><span>${count(o)} artikuj</span><b>${fmt(total(o))}</b></div><button class="btn out" data-act="jump">Shiko</button><button class="btn pri" data-act="save" style="margin-left:0">${I.ok}Ruaj</button></div>`:''}`;
@@ -1702,15 +1706,11 @@ function adminView(){
     </section>
     <div class="aside">
       <section class="box"><h3>Salla</h3>
-        ${[['t','Tavolinat'],['sofa','Separe'],['counter','Banaku'],['darts','Darts']].map(([k,l])=>[k,l,CFG.plan.tables.filter(t=>PLAN_GROUP(t.k)===k).length]).map(([k,l,n])=>`<div class="cnt-row"><span><b>${l}</b><small>${k==='sofa'?(n?'Kënd me divanë rreth një tavoline':'Asnjë separe'):k==='counter'?(n?'Klientët ulen dhe porosisin te banaku':'Pa ulëse te banaku'):k==='darts'?(n?'Lojtarët porosisin aty ku luajnë':'Pa kënd darts'):`Tavolinat 1–${n}`}</small></span>
+        ${[['t','Tavolinat'],['sofa','Separe'],['counter','Banaku'],['darts','Pikado']].map(([k,l])=>[k,l,CFG.plan.tables.filter(t=>PLAN_GROUP(t.k)===k).length]).map(([k,l,n])=>`<div class="cnt-row"><span><b>${l}</b><small>${k==='sofa'?(n?'Kënd me divanë rreth një tavoline':'Asnjë separe'):k==='counter'?(n?'Klientët ulen dhe porosisin te banaku':'Pa ulëse te banaku'):k==='darts'?(n?'Lojtarët porosisin aty ku luajnë':'Pa pikado'):`Tavolinat 1–${n}`}</small></span>
           <span class="step"><button data-tadd="${k}" data-dir="-1" aria-label="Më pak">${I.minus}</button><b>${n}</b><button data-tadd="${k}" data-dir="1" aria-label="Më shumë">${I.plus}</button></span></div>`).join('')}
-        ${(()=>{ const c=CFG.plan.tables.find(t=>t.k==='counter'); return c?`<div class="cnt-row"><span><b>Stolat te banaku</b><small>Secili stol ka porosinë e vet</small></span><span class="step"><button data-pseat="-1" aria-label="Më pak">${I.minus}</button><b>${c.seats||3}</b><button data-pseat="1" aria-label="Më shumë">${I.plus}</button></span></div>`:''; })()}
+        ${(()=>{ const c=CFG.plan.tables.find(t=>t.k==='counter'); return c?`<div class="cnt-row"><span><b>Stolat te banaku</b><small>Secili stol ka porosinë e vet</small></span><span class="step"><button data-pseat="-1" aria-label="Më pak">${I.minus}</button><b>${c.seats||6}</b><button data-pseat="1" aria-label="Më shumë">${I.plus}</button></span></div>`:''; })()}
         ${(()=>{ const n=(CFG.plan.fixtures||[]).filter(f=>f.k==='col').length; return `<div class="cnt-row"><span><b>Shtyllat</b><small>Kolonat në mes të lokalit</small></span><span class="step"><button data-pcol="-1" aria-label="Më pak">${I.minus}</button><b>${n}</b><button data-pcol="1" aria-label="Më shumë">${I.plus}</button></span></div>`; })()}
         <button class="btn out full arr-go" data-act="arrange">${I.grid}Rregullo sallën</button>
-      </section>
-      <section class="box"><h3>Klientët e rregullt</h3>
-        <div class="accm">${CFG.accounts.map(a=>`<div><span><b>${esc(a.name)}</b><small>${S.orders[a.id]?`${fmt(total(S.orders[a.id]))} pa paguar`:'Asgjë pa paguar'}</small></span><button class="del" data-delacc="${a.id}" aria-label="Fshi ${esc(a.name)}">${I.trash}</button></div>`).join('')}</div>
-        <form class="accf" id="accform"><input class="ai" id="acc-n" placeholder="Emri i klientit ose kompanisë" autocomplete="off"><button class="btn out" type="submit">Shto klientin</button></form>
       </section>
       <section class="box"><h3>Stafi</h3>
         <div class="chips">${CFG.staff.map(n=>`<span class="chip"><b>${esc(n[0])}</b>${esc(n)}${CFG.staff.length>1?`<button data-delstaff="${esc(n)}" aria-label="Hiq ${esc(n)}">${I.x}</button>`:''}</span>`).join('')}</div>
@@ -1997,7 +1997,7 @@ function sumView(){
       <section><h4>Pagat dhe avanset · ${mName(D.a)}</h4><table class="dt"><thead><tr><th>Punëtori</th><th class="r">Paga</th><th class="r">Avanse</th><th class="r">Paguar</th><th class="r">Mbetet</th></tr></thead><tbody>${D.workers.map(x=>`<tr><td>${esc(x.w)}</td><td class="r">${fmt(x.sal)}</td><td class="r">${fmt(x.adv)}</td><td class="r">${fmt(x.paid)}</td><td class="r b">${fmt(x.rem)}</td></tr>`).join('')}</tbody></table></section>
       ${D.sins.length?`<section><h4>Malli i blerë · ${fmt(D.stockBuy)}</h4><table class="dt"><thead><tr><th>Data</th><th>Artikujt</th><th class="r">Shuma</th></tr></thead><tbody>${D.sins.map(m=>`<tr><td>${dd(m.t)}</td><td class="its">${mvTxt(m)}</td><td class="r b">${fmt(m.paid)}</td></tr>`).join('')}</tbody></table></section>`:''}
       <section><h4>Të gjitha shpenzimet</h4><table class="dt"><thead><tr><th>Data</th><th>Kategoria</th><th>Përshkrimi</th><th class="r">Shuma</th></tr></thead><tbody>${D.exp.map(e=>`<tr><td>${dd(e.t)}</td><td>${esc(e.cat)}</td><td class="its">${esc(e.note||'—')}</td><td class="r b">${fmt(e.amount)}</td></tr>`).join('')||'<tr><td colspan="4">Asnjë shpenzim</td></tr>'}</tbody></table></section>
-      <section class="two-s"><div><h4>Nga shtëpia</h4><p>${D.house.length} herë · vlera ${fmt(D.hval)}</p></div><div><h4>Klientët e rregullt, pa paguar</h4>${D.accts.length?D.accts.map(([n,v])=>`<p>${esc(n)} · <b>${fmt(v)}</b></p>`).join(''):'<p>Asnjë llogari e hapur</p>'}</div></section>
+      <section class="two-s"><div><h4>Nga shtëpia</h4><p>${D.house.length} herë · vlera ${fmt(D.hval)}</p></div></section>
     </article>`;
 }
 function buildPDF(D){
@@ -2630,8 +2630,8 @@ document.addEventListener('click',e=>{
   }
   if(d.pv){ S.pv=d.pv; try{ localStorage.setItem('xbar-pv',d.pv); }catch(_){} render(); return; }
   if(d.tadd){ planCount(d.tadd,Number(d.dir)); return; }
-  if(d.pseat){ const c=CFG.plan.tables.find(t=>t.k==='counter'); if(!c) return; const cur=c.seats||3, nv=cur+Number(d.pseat);
-    if(nv<1||nv>12) return; if(nv<cur&&S.orders[c.id+'s'+cur]){ toast(`${tname(c.id+'s'+cur)} ka porosi të hapur`); return; }
+  if(d.pseat){ const c=CFG.plan.tables.find(t=>t.k==='counter'); if(!c) return; const cur=c.seats||6, nv=cur+Number(d.pseat);
+    if(nv<1||nv>10) return; if(nv>cur){ const H=CFG.plan.h||620, bh=pdim({...c,seats:nv})[1]; if(c.y+bh/2>H-8) c.y=Math.max(bh/2+8,H-8-bh/2); } if(nv<cur&&S.orders[c.id+'s'+cur]){ toast(`${tname(c.id+'s'+cur)} ka porosi të hapur`); return; }
     c.seats=nv; buildTables(); saveCfg(); render(); return; }
   if(d.pcol){ const F=CFG.plan.fixtures=CFG.plan.fixtures||[], cols=F.filter(f=>f.k==='col');
     if(Number(d.pcol)>0){ if(cols.length>=8) return; let n=1; while(F.some(f=>f.id==='col'+n)) n++; const [x,y]=planFree('col'); F.push({id:'col'+n,k:'col',x,y,r:0}); }
