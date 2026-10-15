@@ -908,6 +908,38 @@ select.ai{appearance:auto}
 .eqc{display:flex; flex-direction:column; align-items:center; gap:4px; padding:22px 16px; border-radius:16px; background:var(--blue-soft); margin-bottom:14px; text-align:center}
 .eqc span{font-weight:700; color:var(--blue-2)} .eqc b{font-size:44px; font-weight:800; letter-spacing:-.02em; line-height:1.1} .eqc small{color:var(--ink-2); font-weight:600}
 .eqd{display:flex; gap:6px; margin-top:10px} .eqd i{width:22px; height:8px; border-radius:4px; background:#c7d6f5} .eqd i.on{background:var(--green)}
+/* Pikado coins */
+.coins{background:var(--card); border-radius:var(--r); padding:14px 14px 16px; margin-bottom:12px; box-shadow:0 0 0 1.5px var(--ink) inset}
+.coins-h{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:12px}
+.coins-h b{font-size:16px; font-weight:800}
+.coins-h span{color:var(--mute); font-size:13px; font-weight:600}
+.coins-r{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px}
+.coin{position:relative; display:flex; align-items:center; justify-content:center; gap:12px; min-height:84px; padding:10px; border-radius:calc(var(--r) - 4px); background:var(--bg); font:inherit; color:var(--ink); cursor:pointer; transition:transform .08s}
+.coin:active{transform:scale(.97)}
+.coin .cpic{width:56px; height:56px; flex:none}
+.coin .cpic svg{width:100%; height:100%; display:block}
+.coin b{font-size:22px; font-weight:800; letter-spacing:-.01em; white-space:nowrap}
+.coin.in{box-shadow:0 0 0 2px var(--busy) inset}
+.coin .q{position:absolute; top:8px; right:8px; min-width:26px; height:26px; padding:0 7px; border-radius:13px; background:var(--busy); color:#fff; font-weight:800; font-size:14px; display:grid; place-items:center}
+@media (max-width:720px){ .coin{flex-direction:column; gap:4px; min-height:96px} .coin .cpic{width:44px; height:44px} .coin b{font-size:18px} .coins-h span{font-size:12px} }
+.qcoin{display:grid; grid-template-columns:minmax(0,1.25fr) repeat(3,minmax(0,1fr)); gap:8px; align-items:center; margin-bottom:12px}
+.qcoin>span{font-weight:800; font-size:14px; line-height:1.2}
+.qcoin>span small{display:block; color:var(--mute); font-weight:600; font-size:12px; margin-top:2px}
+.qcoin button{display:flex; flex-direction:column; align-items:center; gap:2px; padding:7px 4px 6px; border-radius:12px; background:var(--bg); font:inherit; font-weight:800; font-size:14px; color:var(--ink); cursor:pointer; white-space:nowrap}
+.qcoin button:active{transform:scale(.96)}
+.qcoin i{width:34px; height:34px; display:block}
+.qcoin i svg{width:100%; height:100%; display:block}
+.pkg{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-top:6px}
+.pkc{background:var(--bg); border-radius:calc(var(--r) - 4px); padding:16px 18px}
+.pkc>span{display:block; color:var(--mute); font-weight:700; font-size:15px}
+.pkc>b{display:block; font-size:28px; font-weight:800; letter-spacing:-.02em; margin:2px 0 0}
+.pkc>small{display:block; color:var(--mute); font-weight:600; font-size:14px; margin-bottom:10px}
+.pkd{display:flex; justify-content:space-between; gap:10px; padding:8px 0 0; margin-top:8px; border-top:1px solid var(--line); font-size:14px; font-weight:600; color:var(--ink-2)}
+.pkd em{font-style:normal; font-weight:700; color:var(--ink); white-space:nowrap}
+.pkd.pkt{font-weight:800; color:var(--ink)} .pkd.pkt em{font-weight:800}
+.pkc.on{background:var(--ink); color:#fff} .pkc.on>span,.pkc.on>small,.pkc.on .pkd{color:#c4cbd4} .pkc.on .pkd{border-color:rgba(255,255,255,.14)} .pkc.on .pkd em,.pkc.on .pkd.pkt{color:#fff}
+@media (max-width:720px){ .pkg{grid-template-columns:minmax(0,1fr); gap:10px} .pkc>b{font-size:24px} }
+
 
 /* production additions */
 #netbar{position:fixed; z-index:60; left:50%; top:10px; transform:translateX(-50%); background:var(--red); color:#fff; font-weight:700; padding:10px 16px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.18); max-width:calc(100% - 24px); text-align:center}
@@ -1122,6 +1154,8 @@ const art={
   can:c=>`<svg viewBox="0 0 64 64"><rect x="19" y="10" width="26" height="46" rx="6" fill="${c}"/><rect x="21" y="7" width="22" height="5" rx="2.5" fill="#cbd0d6"/><path d="M19 30 q13 -8 26 0 v6 q-13 -8 -26 0z" fill="#fff" opacity=".85"/></svg>`,
   croissant:()=>`<svg viewBox="0 0 64 64">${SAUCER}<path d="M10 40 q4 -20 22 -22 q18 2 22 22 q-6 -4 -10 -3 q-4 -9 -12 -9 q-8 0 -12 9 q-4 -1 -10 3z" fill="#d9a05b"/><path d="M26 30 q6 -5 12 0 M22 34 q10 -8 20 0" stroke="#b97c3a" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
   cake:()=>`<svg viewBox="0 0 64 64">${SAUCER}<path d="M10 46 l40 -16 v18 l-40 2z" fill="#f4e3c8"/><path d="M10 46 l40 -16 v4 l-40 16z" fill="#c8a06a"/><path d="M10 40 l40 -16 v6 l-40 16z" fill="#fbf2e3"/><path d="M10 40 l40 -16" stroke="#c4475b" stroke-width="5" stroke-linecap="round"/></svg>`,
+  coin:v=>{ const bi=v!=='50', g='#d8a93b', sv='#c4cad3', out=v==='2'?sv:g, inn=v==='1'?sv:g;
+    return `<svg viewBox="0 0 64 64"><circle cx="32" cy="34" r="25" fill="rgba(18,18,18,.10)"/><circle cx="32" cy="32" r="25" fill="${out}"/><circle cx="32" cy="32" r="${bi?17:21.5}" fill="${inn}"/><circle cx="32" cy="32" r="${bi?17:21.5}" fill="none" stroke="rgba(18,18,18,.16)" stroke-width="1.2"/><text x="32" y="${v==='50'?38.5:40}" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="${v==='50'?17:22}" fill="#2a2a2a">${v}</text></svg>`; },
   trileqe:()=>`<svg viewBox="0 0 64 64">${SAUCER}<rect x="13" y="26" width="38" height="24" rx="4" fill="#f6e6c4"/><path d="M13 30 q0 -4 4 -4 h30 q4 0 4 4 v3 q-4 3 -8 0 q-5 3 -10 0 q-5 3 -10 0 q-5 3 -10 0z" fill="#c9832f"/></svg>`,
 };
 const MENU=[
@@ -1158,8 +1192,16 @@ const MENU=[
   {id:'tr',c:'Ëmbëlsira',n:'Trileqe',p:2.00,a:art.trileqe},
   {id:'kr',c:'Ëmbëlsira',n:'Kroasan',p:1.20,a:art.croissant},
   {id:'ch',c:'Ëmbëlsira',n:'Cheesecake',p:2.50,a:art.cake},
+  /* Pikado: the boss hands players coins for the dart machine; each coin goes on the tab like a drink */
+  {id:'pk05',c:'Pikado',n:'Pikado 0,50 €',p:0.50,a:()=>art.coin('50')},
+  {id:'pk1',c:'Pikado',n:'Pikado 1 €',p:1.00,a:()=>art.coin('1')},
+  {id:'pk2',c:'Pikado',n:'Pikado 2 €',p:2.00,a:()=>art.coin('2')},
 ];
-const CATS=[['Kafe','mm'],['Çaj','cm'],['Pije','cc'],['Lëngje','lp'],['Birra','bp'],['Ëmbëlsira','tr']];
+const COINS=MENU.filter(m=>m.c==='Pikado').map(m=>({...m}));
+const COIN_IDS=COINS.map(m=>m.id);
+const isCoin=id=>COIN_IDS.includes(id);
+const coinLbl=id=>M[id]?M[id].n.replace(/^Pikado\s*/,''):'';
+const CATS=[['Kafe','mm'],['Çaj','cm'],['Pije','cc'],['Lëngje','lp'],['Birra','bp'],['Ëmbëlsira','tr'],['Pikado','pk1']];
 const M=Object.fromEntries(MENU.map(m=>[m.id,m]));
 
 /* Room: 6 tables + 1 separe (sofa lounge), placed on a floor plan the owner can arrange. Plus takeaway.
@@ -1219,12 +1261,18 @@ function buildTables(){
 }
 const nTables=()=>TABLES.filter(t=>!t.take).length;
 const DEF_ART=Object.fromEntries(MENU.map(m=>[m.id,m.a]));
-const catArt=c=>c==='Kafe'?()=>art.cup('#c99a6b',1):c==='Çaj'?art.tulip:c==='Pije'?()=>art.gb('#9ccfe6','#ffffff','#c9ccd1'):c==='Lëngje'?()=>art.jar('#f6b21b'):c==='Birra'?()=>art.beer('#5a2e12','#f3ece0','#e07a1c'):art.cake;
+const catArt=c=>c==='Kafe'?()=>art.cup('#c99a6b',1):c==='Çaj'?art.tulip:c==='Pije'?()=>art.gb('#9ccfe6','#ffffff','#c9ccd1'):c==='Lëngje'?()=>art.jar('#f6b21b'):c==='Birra'?()=>art.beer('#5a2e12','#f3ece0','#e07a1c'):c==='Pikado'?()=>art.coin('1'):art.cake;
+/* replace the menu with a saved one; the Pikado coins are always there (menus saved before they existed get them added) */
+function adoptMenu(list){
+  MENU.length=0; list.forEach(m=>MENU.push({...m, a:DEF_ART[m.id]||catArt(m.c)}));
+  COINS.forEach(c=>{ if(!MENU.some(m=>m.id===c.id)) MENU.push({...c, a:DEF_ART[c.id]}); });
+  Object.keys(M).forEach(k=>delete M[k]); MENU.forEach(m=>M[m.id]=m);
+}
 function cfgDoc(){ return {menu:MENU.map(({id,c,n,p,min,cost,track})=>({id,c,n,p,min,cost,track})), plan:CFG.plan, staff:CFG.staff, salary:CFG.salary, accounts:CFG.accounts, pin:CFG.pin}; }
 function saveCfg(){ schedulePersist(); }
 function applyCfg(d){
   if(!d) return;
-  if(Array.isArray(d.menu)&&d.menu.length){ MENU.length=0; d.menu.forEach(m=>MENU.push({...m, a:DEF_ART[m.id]||catArt(m.c)})); Object.keys(M).forEach(k=>delete M[k]); MENU.forEach(m=>M[m.id]=m); }
+  if(Array.isArray(d.menu)&&d.menu.length) adoptMenu(d.menu);
   adoptPlan(d.plan);
   if(Array.isArray(d.staff)&&d.staff.length) CFG.staff=d.staff;
   if(d.salary&&typeof d.salary==='object') CFG.salary=d.salary;
@@ -1539,11 +1587,13 @@ function detail(){
         ${o?`<div class="alt"><button data-split="${id}">${I.split}Paguaj një pjesë</button><button data-pay="Kartelë" data-id="${id}">${I.card}Me kartelë</button></div>`:''}
       </div></aside>`;
   }
-  const o=S.orders[id], st=status(id);
+  const o=S.orders[id], st=status(id), DZ=T[id]&&T[id].k==='darts';
+  const coinsNow=o?sum(o.rounds,r=>sum(r.items.filter(i=>isCoin(i.id)),i=>priceOf(i.id)*i.q)):0;
   return `<div class="bs-scrim" data-desel></div><aside class="panel det" role="dialog" aria-label="${tname(id)}"><span class="handle" data-desel></span>
     <div class="ph"><div><h2>${tname(id)}</h2><p>${o?`Hapur ${hm(o.opened)} · ${o.by} · ${o.rounds.length} ${o.rounds.length===1?'raund':'raunde'}`:`${T[id].s||''} vende · e lirë`}</p></div><span class="pill ${st}">${LBL[st]}</span></div>
     <div class="pb">${o?o.rounds.map(r=>`<div class="rnd"><div class="rh"><b>Raundi ${r.n}</b><span>${hm(r.t)} · ${r.by}${r.saved?'':' · e paruajtur'}</span><em>${fmt(roundTotal(r))}</em></div>${r.items.map(i=>`<div class="mini"><b>${i.q}×</b><span>${esc(M[i.id].n)}</span><span>${fmt(priceOf(i.id)*i.q)}</span></div>`).join('')}</div>`).join(''):`<div class="empty">Tavolina është e lirë.<br>Hap një porosi të re.</div>`}</div>
     <div class="pf">
+      ${DZ?`<div class="qcoin"><span>Jep monedhë${coinsNow?`<small>${fmt(coinsNow)} deri tani</small>`:''}</span>${COIN_IDS.filter(c=>M[c]).map(c=>`<button data-coin="${c}" data-id="${id}" aria-label="Jep monedhë ${esc(coinLbl(c))}"><i>${M[c].a()}</i>${esc(coinLbl(c))}</button>`).join('')}</div>`:''}
       ${o&&o.prepaid?`<div class="row"><span>Paguar me pjesë (${o.parts?o.parts.paid+' nga '+o.parts.n:''})</span><b>−${fmt(o.prepaid)}</b></div>`:''}${o?`<div class="row total"><span>${o.prepaid?'Mbetet':'Totali'}</span><b>${fmt(total(o))}</b></div>`:''}
       <div class="btns">
         ${o?`<button class="btn out" data-open="${id}">${I.plus}Raund i ri</button><button class="btn pri" data-pay="Kesh" data-id="${id}">${I.print}Printo faturën</button>`
@@ -1558,12 +1608,15 @@ function orderView(){
   const id=S.table, o=S.orders[id], d=lastDraft(o), dItems=d?d.items:[], has=count(o)>0, n=unsent(o), st=status(id);
   const nextN=o?(d?d.n:o.rounds.length+1):1;
   const qOf=mid=>(dItems.find(l=>l.id===mid)||{}).q||0;
-  const list=MENU.filter(m=>S.q?m.n.toLowerCase().includes(S.q.toLowerCase()):m.c===S.cat);
+  const DZ=T[id]&&T[id].k==='darts', cats=DZ?CATS.filter(c=>c[0]!=='Pikado'):CATS, cat=DZ&&S.cat==='Pikado'?cats[0][0]:S.cat;
+  const list=MENU.filter(m=>S.q?m.n.toLowerCase().includes(S.q.toLowerCase()):m.c===cat);
   const H=id==='house', A=isAcct(id), ac=A?acct(id):null;
+  const coinBar=DZ&&!S.q?`<div class="coins"><div class="coins-h"><b>Monedha për lojë</b><span>çdo prekje shton një monedhë në llogarinë e Pikados</span></div>
+      <div class="coins-r">${COIN_IDS.filter(c=>M[c]).map(c=>{ const q=qOf(c); return `<button class="coin ${q?'in':''}" data-add="${c}" aria-label="Shto monedhë ${esc(coinLbl(c))}"><span class="cpic">${M[c].a()}</span><b>${esc(coinLbl(c))}</b>${q?`<span class="q">${q}</span>`:''}</button>`; }).join('')}</div></div>`:'';
   return `<div class="oh"><button class="back" data-go="${H?'house':'tables'}">${I.back}${H?'Nga shtëpia':'Tavolinat'}</button><h1>${H?'Shërbe nga shtëpia':tname(id)}</h1>${A?'<span class="pill acct">Klient i rregullt</span>':o&&!H?`<span class="pill ${st}">${LBL[st]}</span>`:''}
       <label class="search">${I.search}<input id="q" type="search" placeholder="Kërko në meny" value="${esc(S.q)}" autocomplete="off"></label></div>
     <div class="split"><div>
-      <div class="cats">${CATS.map(([c,ic])=>`<button class="cat" data-cat="${c}" aria-pressed="${!S.q&&S.cat===c}"><span class="ci">${M[ic].a()}</span><span><b>${c}</b><span>${MENU.filter(m=>m.c===c).length} artikuj</span></span></button>`).join('')}</div>
+      ${coinBar}<div class="cats">${cats.map(([c,ic])=>`<button class="cat" data-cat="${c}" aria-pressed="${!S.q&&cat===c}"><span class="ci">${M[ic].a()}</span><span><b>${c}</b><span>${MENU.filter(m=>m.c===c).length} artikuj</span></span></button>`).join('')}</div>
       <div class="menu">${list.map(m=>{const q=qOf(m.id);return `<div class="it ${q?'in':''}"><button class="hit" data-add="${m.id}" aria-label="Shto ${esc(m.n)}"><span class="pic">${m.a()}</span><span class="nm">${esc(m.n)}</span></button>${q?`<span class="q">${q}</span>`:''}<div class="rw"><span class="pr">${fmt(m.p)}</span><span class="ctl">${q?`<button class="sub" data-sub="${m.id}" aria-label="Hiq një ${esc(m.n)}">${q===1?I.trash:I.minus}</button>`:''}<button class="add" data-add="${m.id}" aria-label="Shto një ${esc(m.n)}">${I.plus}</button></span></div></div>`}).join('')||'<div class="empty">Nuk u gjet asgjë.</div>'}</div>
     </div>
     <aside class="panel" id="op">
@@ -1627,7 +1680,7 @@ function bucketSum(list,B,f){ const v=new Array(B.n).fill(0); list.forEach(x=>{ 
    Categorical colors follow the validated reference order (slot 1 blue, 2 orange, 3 aqua, 4 yellow, 5 magenta),
    each category keeps its color in every period. Lighter slots get visible labels (legend list with values). */
 const VZ={blue:'#ff5a1f',orange:'#2b2b2b',aqua:'#2bb3a3',yellow:'#f2b630',magenta:'#c050a0',gray:'#b4bcc7'};
-const CAT_COLORS={'Kafe':VZ.blue,'Pije':VZ.orange,'Lëngje':VZ.aqua,'Birra':VZ.yellow,'Të tjera':VZ.magenta};
+const CAT_COLORS={'Kafe':VZ.blue,'Pije':VZ.orange,'Lëngje':VZ.aqua,'Birra':VZ.yellow,'Pikado':VZ.gray,'Të tjera':VZ.magenta};
 function donut(segs,center,sub){
   const tot=sum(segs,s=>s.v); if(!tot) return '<div class="empty">Ende asnjë shitje në këtë periudhë.</div>';
   const R=80, r=52, cx=100, cy=100; let a0=-Math.PI/2;
@@ -1689,6 +1742,18 @@ function reportCharts(k,P,cur){
   return `<div class="cols vz">${pie}${line}</div>${heat}`;
 }
 
+function pikadoBox(){
+  const dz=new Set(TABLES.filter(t=>t.k==='darts').map(t=>t.id)); if(!dz.size&&!S.sales.some(x=>x.lines.some(l=>isCoin(l.id)))) return '';
+  const t=now(), per=[['Sot',sod(t),addDays(sod(t),1)],['Kjo javë',weekStart(t),addDays(weekStart(t),7)],['Ky muaj',new Date(t.getFullYear(),t.getMonth(),1),new Date(t.getFullYear(),t.getMonth()+1,1)]];
+  const calc=(a,b)=>{ const L=S.sales.filter(x=>inRange(x.t,a,b)); let coin=0,n=0,drink=0; const by={};
+    L.forEach(x=>x.lines.forEach(l=>{ const v=priceOf(l.id)*l.q; if(isCoin(l.id)){ coin+=v; n+=l.q; by[l.id]=(by[l.id]||0)+l.q; } else if(dz.has(x.table)) drink+=v; }));
+    return {coin,n,drink,by}; };
+  const R=per.map(([l,a,b])=>({l,...calc(a,b)})), td=R[0];
+  return `<div class="box pkb"><div class="bh"><h3>Pikado</h3><span class="ahint">monedhat për lojë dhe pijet te Pikado</span></div>
+    <div class="pkg">${R.map((r,i)=>`<div class="pkc ${i?'':'on'}"><span>${r.l}</span><b>${fmt(r.coin)}</b><small>${fmtN(r.n)} ${r.n===1?'monedhë':'monedha'}</small>
+      <div class="pkd"><span>Pije te Pikado</span><em>${fmt(r.drink)}</em></div><div class="pkd pkt"><span>Gjithsej</span><em>${fmt(r.coin+r.drink)}</em></div></div>`).join('')}</div>
+    <p class="note">${td.n?`Sot: ${COIN_IDS.filter(c=>td.by[c]).map(c=>`<b>${td.by[c]} × ${esc(coinLbl(c))}</b>`).join(', ')}. `:'Sot ende asnjë monedhë. '}Monedhat paguhen si çdo artikull tjetër, me kesh ose kartelë, dhe hyjnë në xhiro.</p></div>`;
+}
 function reportView(){
   const k=S.rp, P=rperiod(k), t=now(), D=k==='day';
   const cur=S.sales.filter(x=>inRange(x.t,P.a,P.b)), prev=P.pa?S.sales.filter(x=>inRange(x.t,P.pa,P.pb)):[];
@@ -1724,6 +1789,7 @@ function reportView(){
     </div>
     ${chart}
     ${reportCharts(k,P,cur)}
+    ${pikadoBox()}
     <div class="cols">
       ${bestBox(`Më të shiturat · ${RPS.find(r=>r[0]===k)[1].toLowerCase()}`,cur)}
       <div class="box"><h3>Si paguajnë klientët</h3>
@@ -1841,7 +1907,7 @@ function closeSheet(){
 
 function printReceipt(where,lines,tot,method){
   const el=document.getElementById('prt'); if(!el) return;
-  const d=now();
+  const d=now(); lines=[...lines.filter(l=>!isCoin(l.id)),...lines.filter(l=>isCoin(l.id)).sort((a,b)=>priceOf(a.id)-priceOf(b.id))]; /* Pikado coins together, after the drinks */
   el.innerHTML=`<img src="${LOGO}" alt=""><div class="pc"><b>POROSI</b></div><div class="pc">${d.toLocaleDateString('sq-AL')} · ${hm(d)}</div><div class="pc">${esc(where)} · ${esc(S.staff)}</div><hr>
     ${lines.map(l=>`<div class="pr"><span>${l.q} × ${esc(M[l.id]?M[l.id].n:'')}</span><span>${fmt(priceOf(l.id)*l.q)}</span></div>`).join('')}<hr>
     <div class="pr pt"><span>TOTALI</span><span>${fmt(tot)}</span></div><div class="pc">${method==='Kartelë'?'Paguar me kartelë':'Paguar me kesh'}</div><hr><div class="pc">Faleminderit! Ju presim përsëri.</div><div class="pc nf">Nuk është kupon fiskal</div>`;
@@ -2176,6 +2242,7 @@ function closeView(){
           ${row('Shitje me kartelë',D.card,'',`${D.sales.filter(x=>x.method!=='Kesh').length} fatura · nuk janë në arkë`)}
           ${row('Xhiro gjithsej',D.cash+D.card,'',`${D.sales.length} fatura`)}
           ${row('Nga shtëpia',sum(D.house,x=>x.total),'',`${D.house.length} herë · pa pagesë`)}
+          ${(()=>{ let v=0,n=0; D.sales.forEach(x=>x.lines.forEach(l=>{ if(isCoin(l.id)){ v+=priceOf(l.id)*l.q; n+=l.q; } })); return n?row('Pikado · monedha',v,'',`${n} monedha · përfshihen te shitjet`):''; })()}
           ${D.owner.length?row('Paguar nga pronari',sum(D.owner,e=>e.amount),'',D.owner.map(e=>esc(e.note||e.cat)).join(', ')+' · jo nga arka'):''}
           ${openA.length?row('Klientët e rregullt, pa paguar',sum(openA,a=>total(S.orders[a.id])),'',openA.map(a=>esc(a.name)).join(', ')):''}
         </section>
@@ -2194,13 +2261,13 @@ function closeView(){
 function doClose(){
   const D=drawer(), t=now(), cnt=S.counted; if(cnt==null) return;
   const left=S.leftFloat!=null?S.leftFloat:50, diff=Math.round((cnt-D.expected)*100)/100;
-  const c={id:'c'+Date.now(),from:D.from,t,float:D.float,cash:D.cash,card:D.card,out:D.out,adv:D.adv,sout:D.sout,expected:D.expected,counted:cnt,diff,left,taken:Math.max(0,cnt-left),by:S.staff};
+  const c={id:'c'+Date.now(),from:D.from,t,float:D.float,cash:D.cash,card:D.card,out:D.out,adv:D.adv,sout:D.sout,expected:D.expected,counted:cnt,diff,left,taken:Math.max(0,cnt-left),by:S.staff, pk:Math.round(sum(D.sales,x=>sum(x.lines.filter(l=>isCoin(l.id)),l=>priceOf(l.id)*l.q))*100)/100};
   closings().push(c); saveClose(); S.counted=null; S.leftFloat=null; S.floatOverride=null;
   const el=document.getElementById('prt');
   if(el){ el.innerHTML=`<img src="${LOGO}" alt=""><div class="pc"><b>MBYLLJA E DITËS</b></div><div class="pc">${t.toLocaleDateString('sq-AL')} · ${hm(t)} · ${esc(S.staff)}</div><hr>
     <div class="pr"><span>Fondi i fillimit</span><span>${fmt(c.float)}</span></div><div class="pr"><span>+ Shitje me kesh</span><span>${fmt(c.cash)}</span></div><div class="pr"><span>- Blerje nga arka</span><span>${fmt(c.out)}</span></div>${c.sout?`<div class="pr"><span>- Mall nga arka</span><span>${fmt(c.sout)}</span></div>`:''}${c.adv?`<div class="pr"><span>- Avanse</span><span>${fmt(c.adv)}</span></div>`:''}<hr>
     <div class="pr"><span>Duhet në arkë</span><span>${fmt(c.expected)}</span></div><div class="pr"><span>Numëruar</span><span>${fmt(c.counted)}</span></div><div class="pr pt"><span>Diferenca</span><span>${fmt(c.diff)}</span></div><hr>
-    <div class="pr"><span>Shitje me kartelë</span><span>${fmt(c.card)}</span></div><div class="pr"><span>Xhiro gjithsej</span><span>${fmt(c.cash+c.card)}</span></div><hr>
+    <div class="pr"><span>Shitje me kartelë</span><span>${fmt(c.card)}</span></div><div class="pr"><span>Xhiro gjithsej</span><span>${fmt(c.cash+c.card)}</span></div>${c.pk?`<div class="pr"><span>prej saj Pikado (monedha)</span><span>${fmt(c.pk)}</span></div>`:''}<hr>
     <div class="pr"><span>Lënë për nesër</span><span>${fmt(c.left)}</span></div><div class="pr pt"><span>Merr pronari</span><span>${fmt(c.taken)}</span></div>`;
     doPrint(); }
   render(); scrollTo(0,0);
@@ -2724,7 +2791,8 @@ document.addEventListener('click',e=>{
   if(d.act==='lock'){ S.admin=BOOT.remote; S.pm=0; S.sm=0; S.cm=0; S.cday=null; S.view='tables'; render(); scrollTo(0,0); return; }
   if(d.acat){ S.acat=d.acat; render(); return; }
   if(d.delitem){
-    const id=d.delitem; if(Object.values(S.orders).some(o=>linesOf(o).some(l=>l.id===id))){ toast('Ky artikull është në një porosi të hapur'); return; }
+    const id=d.delitem; if(isCoin(id)){ toast('Monedhat e Pikados nuk fshihen · mund t\u2019ua ndryshoni çmimin'); return; }
+    if(Object.values(S.orders).some(o=>linesOf(o).some(l=>l.id===id))){ toast('Ky artikull është në një porosi të hapur'); return; }
     if(MENU.filter(m=>m.c===M[id].c).length<=1){ toast('Kategoria duhet të ketë të paktën një artikull'); return; }
     const n=M[id].n; MENU.splice(MENU.findIndex(m=>m.id===id),1); delete M[id]; saveCfg(); render(); toast(`${n} u fshi`); return;
   }
@@ -2747,6 +2815,15 @@ document.addEventListener('click',e=>{
   if(d.sel){ if(!S.orders[d.sel]){ S.view='order'; S.table=d.sel; S.sel=null; S.q=''; render(); scrollTo(0,0); return; } S.sel=S.sel===d.sel?null:d.sel; render(); return; }
   if(d.open){ S.who=null; S.view='order'; S.table=d.open; S.sel=isTable(d.open)||isAcct(d.open)?d.open:null; S.q=''; render(); scrollTo(0,0); return; }
   if(d.cat){ S.cat=d.cat; S.q=''; render(); return; }
+  if(d.coin){ /* a coin handed over from the Pikado panel is saved on the tab straight away */
+    const id=d.id, o=S.orders[id], dr0=lastDraft(o);
+    if(dr0&&dr0.items.length){ toast('Ka një raund të paruajtur · hape porosinë'); return; }
+    const last=o&&o.rounds[o.rounds.length-1];
+    if(last&&last.saved&&last.items.every(i=>isCoin(i.id))){ /* keep handing coins in one round instead of a new round per coin */
+      const l=last.items.find(i=>i.id===d.coin); l?l.q++:last.items.push({id:d.coin,q:1}); last.t=now(); last.by=S.staff;
+    } else { const dr=ensureDraft(id); dr.items.push({id:d.coin,q:1}); dr.saved=true; dr.t=now(); dr.by=S.staff; }
+    S.sel=id; render(); toast(`${tname(id)} · +${coinLbl(d.coin)} · ${fmt(total(S.orders[id]))}`); return;
+  }
   if(d.add){
     const dr=ensureDraft(S.table);
     const l=dr.items.find(x=>x.id===d.add); l?l.q++:dr.items.push({id:d.add,q:1});
