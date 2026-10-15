@@ -37,11 +37,11 @@ h1,h2,h3{margin:0; letter-spacing:-.02em}
 .tabs button:hover .ti{color:var(--ink)}
 .tabs button .ti{display:grid; place-items:center; color:var(--mute); transition:color .15s}
 .tabs button[aria-current="true"]{color:var(--ink)}
-.tabs button[aria-current="true"] .ti{color:var(--blue)}
-.tabs button::after{content:""; position:absolute; left:14px; right:14px; bottom:0; height:3px; border-radius:3px 3px 0 0; background:var(--blue); transform:scaleX(0); transition:transform .2s}
+.tabs button[aria-current="true"] .ti{color:var(--busy)}
+.tabs button::after{content:""; position:absolute; left:14px; right:14px; bottom:0; height:3px; border-radius:3px 3px 0 0; background:var(--busy); transform:scaleX(0); transition:transform .2s}
 .tabs button[aria-current="true"]::after{transform:scaleX(1)}
 .tabs button .tc{min-width:24px; height:24px; padding:0 7px; border-radius:7px; background:var(--line); color:var(--ink-2); font-size:13px; font-weight:800; display:grid; place-items:center}
-.tabs button[aria-current="true"] .tc{background:var(--blue-soft); color:var(--blue-2)}
+.tabs button[aria-current="true"] .tc{background:var(--busy); color:#fff}
 .logo{padding-right:20px; border-right:1px solid var(--line); height:36px}
 .bar-r{margin-left:auto; display:flex; align-items:center; gap:10px; color:var(--ink-2); font-weight:600; font-size:15px}
 .fp{display:flex; align-items:center; gap:10px; height:50px; padding:0 16px; border-radius:14px; background:var(--soft)}
@@ -669,7 +669,7 @@ select.ai{appearance:auto}
   .tabs button .ti svg{width:24px; height:24px}
   .tabs button:not([aria-current="true"]) .tl{display:inline}
   .tabs button::after{display:none}
-  .tabs button[aria-current="true"]{background:var(--blue-soft); color:var(--blue-2)}
+  .tabs button[aria-current="true"]{background:none; color:var(--busy)}
   .tabs button .tc{display:grid; position:absolute; top:4px; left:calc(50% + 6px); min-width:20px; height:20px; font-size:12px; padding:0 5px}
   .wrap{padding-bottom:110px}
   .v-order .tabs{display:none}
@@ -934,6 +934,26 @@ select.ai{appearance:auto}
   .panel.det .pf{gap:8px} .panel.det .row.total b{font-size:28px} .panel.det .btn{height:50px} .panel.det .alt button{height:42px}
 }
 
+
+/* ---- layout hardening: nothing pushes past its column, wide tables scroll inside their card ---- */
+.box,.panel,.cols>*,.split>*,.sysg>*,.admin>*,.aside>*,.exg>*,.wks>*,.clx>*,.skl>*,.two-s>*{min-width:0}
+.btns{grid-template-columns:repeat(2,minmax(0,1fr))}
+.btns .btn{min-width:0}
+.btns .btn.full{grid-column:1/-1}
+.lw{overflow-x:clip}
+.docp section{overflow-x:auto}
+.rsb{display:grid; grid-template-columns:repeat(2,minmax(0,1fr))}
+.rsb .btn{white-space:normal; line-height:1.15; text-align:center}
+.rsb .btn.danger-o{grid-column:1/-1}
+@media (max-width:720px){
+  .onav-t button:not([aria-current="true"]){font-size:0; gap:0; padding:0 10px}
+  .cx span{font-size:11px; white-space:normal; line-height:1.15}
+  .arow:not(.add){grid-template-columns:minmax(0,1fr) 92px 40px}
+  .arow:not(.add) .tb{display:none}
+  .onav-t button:not([aria-current="true"]) em{font-size:12px; margin-left:4px}
+  .btn{font-size:15px; padding:0 10px; gap:6px}
+  .docp .dh{flex-wrap:wrap; gap:12px}
+}
 /* ---- floor plan ---- */
 .room{--u:.1cqw; position:relative; container-type:inline-size; aspect-ratio:1000/var(--rh,620); border-radius:22px; background:var(--floor); box-shadow:inset 0 0 0 1.5px var(--wall); overflow:hidden; user-select:none; -webkit-user-select:none}
 .room::before{content:""; position:absolute; inset:0; border-radius:22px; background-image:none; pointer-events:none}
@@ -1775,6 +1795,7 @@ function render(){
   const bar=S.view==='order'&&S.orders[S.table];
   root.className='v-'+S.view;
   root.innerHTML=topBar()+`<div class="wrap ${bar?'has-bar':''}">${v}</div>`;
+  const oa=root.querySelector('.onav-t [aria-current="true"]'); if(oa){ const t=oa.parentElement; t.scrollLeft=Math.max(0,oa.offsetLeft-t.offsetLeft-40); }
   const q=document.getElementById('q');
   if(q&&S.q){ q.focus(); q.setSelectionRange(q.value.length,q.value.length); }
 }
