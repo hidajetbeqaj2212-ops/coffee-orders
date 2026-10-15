@@ -963,11 +963,11 @@ select.ai{appearance:auto}
 }
 
 /* ---- floor plan ---- */
-.room{position:relative; container-type:inline-size; aspect-ratio:1000/var(--rh,620); border-radius:22px; background:var(--floor); box-shadow:inset 0 0 0 1.5px var(--wall); overflow:hidden; user-select:none; -webkit-user-select:none}
-.room::before{content:""; position:absolute; inset:0; border-radius:22px; background-image:linear-gradient(90deg, rgba(30,41,59,.045) 1px, transparent 1px); background-size:3.2cqw 100%; pointer-events:none}
+.room{--u:.1cqw; position:relative; container-type:inline-size; aspect-ratio:1000/var(--rh,620); border-radius:22px; background:var(--floor); box-shadow:inset 0 0 0 1.5px var(--wall); overflow:hidden; user-select:none; -webkit-user-select:none}
+.room::before{content:""; position:absolute; inset:0; border-radius:22px; background-image:none; pointer-events:none}
 .room.arr{max-width:min(100%, calc((100vh - 300px) * 1000 / var(--rh,620))); margin-inline:auto}
 .room.arr::before{background-image:radial-gradient(circle, rgba(30,41,59,.18) 1px, transparent 1.4px); background-size:2cqw 2cqw}
-.ft{position:absolute; left:calc((var(--x) - var(--w)/2) * .1cqw); top:calc((var(--y) - var(--h)/2) * .1cqw); width:calc(var(--w) * .1cqw); height:calc(var(--h) * .1cqw); padding:0; display:block; touch-action:none; transition:filter .15s, opacity .15s, transform .12s}
+.ft{position:absolute; left:calc((var(--x) - var(--w)/2) * var(--u)); top:calc((var(--y) - var(--h)/2) * var(--u)); width:calc(var(--w) * var(--u)); height:calc(var(--h) * var(--u)); padding:0; display:block; touch-action:none; transition:filter .15s, opacity .15s, transform .12s}
 .ft > svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none}
 .ft .ch{fill:var(--chair)} .ft .chb{fill:var(--chair-2)}
 .ft .tt{fill:var(--top); stroke:var(--top-2); stroke-width:2; transition:fill .2s}
@@ -982,7 +982,7 @@ select.ai{appearance:auto}
 .ft .ctin{fill:var(--ctr-in)} .ft .bbar{fill:var(--ctr)}
 .ft .lane{fill:var(--sofa); stroke:none} .ft.open .lane{stroke:var(--busy); stroke-width:3}
 .ft .db2{fill:var(--busy)} .ft .db1{fill:#fff} .ft .db3{fill:var(--ink)}
-.dlab{position:absolute; left:calc(28 * .1cqw); top:50%; transform:translateY(-50%); display:flex; flex-direction:column; align-items:flex-start; gap:6px; pointer-events:none}
+.dlab{position:absolute; left:calc(28 * var(--u)); top:50%; transform:translateY(-50%); display:flex; flex-direction:column; align-items:flex-start; gap:6px; pointer-events:none}
 .dlab b{font-size:clamp(15px,2.1cqw,24px); font-weight:800; letter-spacing:-.02em; color:var(--ink); line-height:1; display:flex; align-items:center; gap:8px}
 .dlab .rdots i{background:var(--busy)}
 .dlab .mtag{position:static; transform:none}
@@ -992,17 +992,17 @@ select.ai{appearance:auto}
 .clab b{font-size:clamp(15px,2.1cqw,24px); font-weight:800; letter-spacing:-.02em; color:#fff; line-height:1}
 .clab small{font-size:clamp(11px,1.25cqw,14px); font-weight:700; color:rgba(255,255,255,.6); font-variant-numeric:tabular-nums}
 .clab em{font-style:normal; color:var(--busy)}
-.seat{position:absolute; left:calc(var(--x) * .1cqw); top:calc(var(--y) * .1cqw); width:max(30px,3.6cqw); height:max(30px,3.6cqw); transform:translate(-50%,-50%); border-radius:50%; background:var(--top); box-shadow:inset 0 0 0 2px var(--chair-2), 0 2px 6px rgba(17,24,39,.12); display:grid; place-items:center; font-weight:800; font-size:clamp(12px,1.35cqw,15px); color:var(--ink-2); z-index:2; transition:transform .12s}
+.seat{position:absolute; left:calc(var(--x) * var(--u)); top:calc(var(--y) * var(--u)); width:max(30px,3.6cqw); height:max(30px,3.6cqw); transform:translate(-50%,-50%); border-radius:50%; background:var(--top); box-shadow:inset 0 0 0 2px var(--chair-2), 0 2px 6px rgba(17,24,39,.12); display:grid; place-items:center; font-weight:800; font-size:clamp(12px,1.35cqw,15px); color:var(--ink-2); z-index:2; transition:transform .12s}
 .seat:hover{transform:translate(-50%,-50%) scale(1.08)}
 .seat.open{background:var(--busy); color:var(--busy-ink,#fff); box-shadow:0 4px 12px rgba(0,0,0,.18)}
 .seat.bill{background:var(--orange); color:#fff; box-shadow:none}
 .seat.sel{outline:3px solid var(--ink); outline-offset:3px}
 .seat.dim{opacity:.28}
 .seat .sp{box-shadow:0 4px 10px rgba(0,0,0,.18); position:absolute; left:50%; top:50%; transform:translate(calc(-50% + var(--nx) * max(52px,5.6cqw)), calc(-50% + var(--ny) * max(34px,3.6cqw))); padding:3px 8px; border-radius:9px; background:var(--ink); color:#fff; font-size:clamp(12px,1.35cqw,15px); font-weight:800; white-space:nowrap; pointer-events:none}
-.ft .dr{fill:none; stroke:var(--chair-2); stroke-width:3; stroke-dasharray:7 6} .ft .drw{fill:var(--chair-2)}
+.ft .dr{fill:none; stroke:var(--chair); stroke-width:2; stroke-dasharray:5 6} .ft .drw{fill:var(--chair)}
 .ft.fx{pointer-events:none}
 .ft .fxl{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:clamp(11px,1.3cqw,15px); font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:#c4cbd4; white-space:nowrap; pointer-events:none}
-.ft.k-door .fxl{color:var(--mute); left:62%; top:auto; bottom:12%; transform:translateX(-50%); font-size:clamp(11px,1.15cqw,14px)}
+.ft.k-door .fxl{color:var(--chair-2); left:62%; top:auto; bottom:12%; transform:translateX(-50%); font-size:clamp(10px,1cqw,12px); font-weight:700; letter-spacing:.06em; text-transform:none}
 .fc{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); min-width:max(68px,8.2cqw); padding:8px 12px 9px; border-radius:12px; background:rgba(255,255,255,.96); box-shadow:0 1px 2px rgba(17,24,39,.10), 0 4px 12px rgba(17,24,39,.10); text-align:center; display:flex; flex-direction:column; align-items:center; gap:1px; line-height:1.1; pointer-events:none; transition:transform .12s}
 .fc .fn{font-size:clamp(18px,2.5cqw,28px); font-weight:800; letter-spacing:-.03em; color:var(--ink)}
 .fc .fn.sep{font-size:clamp(15px,1.85cqw,20px); letter-spacing:-.01em}
@@ -1043,16 +1043,16 @@ button.ft:active{transform:scale(.98)}
 .plan-only{display:block}
 .pvt{display:none}
 /* labels on the plan: the number sits on the table, the money hangs off it as a tag */
-.plab{position:absolute; left:calc(50% + var(--cx,0) * .1cqw); top:calc(50% + var(--cy,0) * .1cqw); transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:5px; line-height:1; pointer-events:none}
+.plab{position:absolute; left:calc(50% + var(--cx,0) * var(--u)); top:calc(50% + var(--cy,0) * var(--u)); transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:5px; line-height:1; pointer-events:none}
 .plab b{font-size:clamp(20px,3cqw,36px); font-weight:800; letter-spacing:-.03em; color:var(--mute)}
 .plab b.nm{font-size:clamp(15px,2.1cqw,24px); letter-spacing:-.02em}
 .ft.k-sofa:not(.open):not(.bill) .plab b{color:var(--ink)}
 .ft.open .plab b,.ft.bill .plab b{color:#fff}
-.ft.k-darts.open .plab b{color:var(--busy-2)}
+.ft.k-darts .plab b{color:var(--ink)}
 .rdots{display:flex; gap:4px}
 .rdots i{width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.9)}
 .ft.k-darts .rdots i{background:var(--busy)}
-.mtag{position:absolute; left:calc(50% + var(--cx,0) * .1cqw); top:calc(50% + var(--cy,0) * .1cqw + max(var(--tb,40) * .1cqw, 30px)); transform:translate(-50%,-50%); display:flex; align-items:baseline; gap:6px; padding:4px 9px; border-radius:9px; background:var(--ink); color:#fff; font-size:clamp(12px,1.35cqw,15px); font-weight:800; white-space:nowrap; box-shadow:0 4px 10px rgba(0,0,0,.18); pointer-events:none}
+.mtag{position:absolute; left:calc(50% + var(--cx,0) * var(--u)); top:calc(50% + var(--cy,0) * var(--u) + max(var(--tb,40) * var(--u), 30px)); transform:translate(-50%,-50%); display:flex; align-items:baseline; gap:6px; padding:4px 9px; border-radius:9px; background:var(--ink); color:#fff; font-size:clamp(12px,1.35cqw,15px); font-weight:800; white-space:nowrap; box-shadow:0 4px 10px rgba(0,0,0,.18); pointer-events:none}
 .mtag i{font-style:normal; font-weight:600; opacity:.6; font-size:.86em}
 .room:not(.arr) .ft.sel .tt{stroke:var(--ink); stroke-width:4}
 .room:not(.arr) .ft.k-darts.sel .lane{stroke:var(--ink); stroke-width:3}
@@ -1060,7 +1060,12 @@ button.ft:active{transform:scale(.98)}
   /* phones: the room keeps a readable size and scrolls sideways; a switch flips to the plain list */
   .plan-wrap{overflow-x:auto; margin-inline:-16px; padding:2px 16px 6px; -webkit-overflow-scrolling:touch; scrollbar-width:none}
   .plan-wrap::-webkit-scrollbar{display:none}
-  .plan-wrap .room{min-width:600px}
+  .plan-wrap .room.arr{min-width:600px}
+  .room.portrait .seat{width:max(26px,3.6cqw); height:max(26px,3.6cqw)}
+  .room.portrait .plab b.nm{font-size:13px}
+  .room.portrait .ft.k-sofa .plab b{color:var(--ink)}
+  .room.portrait .mtag i{display:none}
+  .room.portrait .rdots{display:none}
   .tv.pv-list .plan-wrap{display:none} .tv.pv-list .tlist{display:block}
   .pvt{display:grid; grid-template-columns:1fr 1fr; gap:4px; padding:4px; border-radius:14px; background:var(--soft); margin-bottom:14px}
   .pvt button{height:44px; border-radius:11px; font-weight:800; color:var(--ink-2)}
@@ -1385,37 +1390,40 @@ function pieceSvg(it,bare){
       +`<circle class="db2" cx="${bx}" cy="${by}" r="30"/><circle class="db1" cx="${bx}" cy="${by}" r="24.5"/><circle class="db3" cx="${bx}" cy="${by}" r="18.5"/>`; }
   else if(it.k==='wall'){ g=`<rect class="pwall" x="0" y="0" width="${w}" height="${h}" rx="3"/>`; }
   else if(it.k==='col'){ g=`<rect class="colm" x="0" y="0" width="${w}" height="${h}" rx="4"/><rect class="colt" x="7" y="7" width="${w-14}" height="${h-14}" rx="2"/>`; }
-  else if(it.k==='door'){ g=`<rect class="drw" x="0" y="${h-8}" width="${w}" height="8" rx="3"/><path class="dr" d="M ${w} ${h-8} A ${w} ${w} 0 0 0 0 ${h-8-w}"/><line x1="0" y1="${h-8}" x2="0" y2="${h-8-w}" stroke="#adb5c0" stroke-width="5" stroke-linecap="round"/>`; }
+  else if(it.k==='door'){ g=`<rect class="drw" x="0" y="${h-8}" width="${w}" height="8" rx="3"/><path class="dr" d="M ${w} ${h-8} A ${w} ${w} 0 0 0 0 ${h-8-w}"/><line x1="0" y1="${h-8}" x2="0" y2="${h-8-w}" stroke="#d2d8df" stroke-width="3" stroke-linecap="round"/>`; }
   return `<svg viewBox="0 0 ${bw} ${bh}" aria-hidden="true"><g transform="translate(${bw/2} ${bh/2}) rotate(${it.r||0})${it.m?' scale(-1 1)':''} translate(${-w/2} ${-h/2})">${g}</g></svg>`;
 }
-function topVars(it){
-  const K=kdim(it), f=PLAN_TOP[it.k], b=f?f(K.w,K.h):[K.w/2,K.h/2,K.w/2,K.h/2], q=toPlan(it,b[0],b[1],0,0);
+function topVars(it,ov){
+  const K=kdim(it), f=PLAN_TOP[it.k], b=ov||(f?f(K.w,K.h):[K.w/2,K.h/2,K.w/2,K.h/2]), q=toPlan(it,b[0],b[1],0,0);
   return `--cx:${Math.round(q.x-it.x)};--cy:${Math.round(q.y-it.y)};--tb:${(it.r||0)%180?b[2]:b[3]}`;
 }
+const PHONE=window.matchMedia?matchMedia('(max-width:720px)'):{matches:false};
+try{ PHONE.addEventListener('change',()=>{ if(S.view==='tables') render(); }); }catch(_){}
 function planView(){
-  const A=S.arrange&&S.admin, pl=CFG.plan;
+  const A=S.arrange&&S.admin, pl=CFG.plan, H=pl.h||620, P=PHONE.matches&&!A;
+  const tf=it=>P?{...it, x:it.y, y:1000-it.x, r:((it.r||0)+270)%360}:it; /* turned so the entrance is at the bottom and the bar at the top */
   const show=id=>S.filter==='all'||status(id)===S.filter;
   const pos=it=>{ const [bw,bh]=pdim(it); return `--x:${it.x};--y:${it.y};--w:${bw};--h:${bh}`; };
   const tools=it=>A&&S.arrSel===it.id?`<span class="ftb ${it.y-pdim(it)[1]/2<90?'below':''}"><button data-act="prot" data-id="${it.id}">${I.repeat}Rrotullo</button>${TABLE_SHAPES.includes(it.k)?`<button data-act="pshape" data-id="${it.id}">${I.grid}Forma</button>`:''}${it.k==='counter'?`<button data-act="pflip" data-id="${it.id}">${I.split}Pasqyro</button>`:''}</span>`:'';
-  const fx=(pl.fixtures||[]).map(it=>`<div class="ft fx k-${it.k} ${A&&S.arrSel===it.id?'on':''}" ${A?`data-ft="${it.id}"`:''} style="${pos(it)}">${pieceSvg(it)}${PLAN_KINDS[it.k].l?`<span class="fxl">${PLAN_KINDS[it.k].l}</span>`:''}${tools(it)}</div>`).join('');
-  const tb=pl.tables.map(it=>{
+  const fx=(pl.fixtures||[]).map(tf).map(it=>`<div class="ft fx k-${it.k} ${A&&S.arrSel===it.id?'on':''}" ${A?`data-ft="${it.id}"`:''} style="${pos(it)}">${pieceSvg(it)}${PLAN_KINDS[it.k].l?`<span class="fxl">${PLAN_KINDS[it.k].l}</span>`:''}${tools(it)}</div>`).join('');
+  const tb=pl.tables.map(tf).map(it=>{
     const t=it.k==='counter'?{n:'Banaku'}:T[it.id]; if(!t) return '';
     if(A) return `<div class="ft k-${it.k} free ${S.arrSel===it.id?'on':''}" data-ft="${it.id}" style="${pos(it)}">${pieceSvg(it)}<span class="fc"><span class="fn ${it.k==='sofa'||it.k==='counter'?'sep':''}">${esc(t.n)}</span><span class="fm">${it.k==='counter'?(it.seats||6)+' stola':PLAN_KINDS[it.k].l}</span></span>${tools(it)}</div>`;
     if(it.k==='counter'){ const seats=counterSeats(it), busy=seats.filter(p=>S.orders[p.id]).length;
-      return `<div class="ft k-counter fxc" style="${pos(it)}">${pieceSvg(it,true)}<span class="clab" style="left:${((44+56+kdim(it).w)/2/kdim(it).w*100).toFixed(1)}%;top:${((kdim(it).h-56)/2/kdim(it).h*100).toFixed(1)}%"><b>${esc(T[it.id+'s1']?T[it.id+'s1'].nm.split(' · ')[0]:'Banaku')}</b><small>${busy?`<em>${busy}</em> / ${seats.length} të zënë`:`${seats.length} stola`}</small></span></div>`+seats.map(p=>{
+      return `<div class="ft k-counter fxc" style="${pos(it)}">${pieceSvg(it,true)}<span class="clab" style="${(()=>{ const K=kdim(it), q=toPlan(it,(100+K.w)/2,(K.h-56)/2,0,0); return `left:calc(50% + ${Math.round(q.x-it.x)} * var(--u));top:calc(50% + ${Math.round(q.y-it.y)} * var(--u))`; })()}"><b>${esc(T[it.id+'s1']?T[it.id+'s1'].nm.split(' · ')[0]:'Banaku')}</b><small>${busy?`<em>${busy}</em> / ${seats.length} të zënë`:`${seats.length} stola`}</small></span></div>`+seats.map(p=>{
         const q=toPlan(it,p.lx,p.ly,p.nx,p.ny), o=S.orders[p.id], st=status(p.id);
         return `<button class="seat ${st} ${S.sel===p.id?'sel':''} ${show(p.id)?'':'dim'}" data-sel="${p.id}" style="--x:${Math.round(q.x)};--y:${Math.round(q.y)};--nx:${q.nx};--ny:${q.ny}" aria-label="${esc(tname(p.id))} · ${LBL[st]}${o?' · '+fmt(total(o)):''}">${p.i}${o?`<span class="sp">${fmt(total(o))}</span>`:''}</button>`; }).join('');
     }
     const o=S.orders[it.id], st=status(it.id), nr=o?savedRounds(o):0;
-    const lab=it.k==='sofa'?`<b class="nm">${esc(t.n)}</b>`:`<b>${esc(t.n)}</b>`;
-    if(it.k==='darts') return `<button class="ft k-darts ${st} ${S.sel===it.id?'sel':''} ${show(it.id)?'':'dim'}" data-sel="${it.id}" style="${pos(it)}" aria-label="${esc(tname(it.id))} · ${LBL[st]}${o?' · '+fmt(total(o)):''}">${pieceSvg(it)}<span class="dlab"><b>${esc(t.n)}${nr>1?`<span class="rdots">${'<i></i>'.repeat(Math.min(6,nr))}</span>`:''}</b>${o?`<span class="mtag">${fmt(total(o))}<i>${dur(o)}</i></span>`:''}</span></button>`;
-    return `<button class="ft k-${it.k} ${st} ${S.sel===it.id?'sel':''} ${show(it.id)?'':'dim'}" data-sel="${it.id}" style="${pos(it)};${topVars(it)}" aria-label="${esc(tname(it.id))} · ${LBL[st]}${o?' · '+fmt(total(o))+' · '+nr+' raunde':''}">${pieceSvg(it)}
+    const lab=it.k==='sofa'||it.k==='darts'?`<b class="nm">${esc(t.n)}</b>`:`<b>${esc(t.n)}</b>`;
+    if(it.k==='darts'&&!P) return `<button class="ft k-darts ${st} ${S.sel===it.id?'sel':''} ${show(it.id)?'':'dim'}" data-sel="${it.id}" style="${pos(it)}" aria-label="${esc(tname(it.id))} · ${LBL[st]}${o?' · '+fmt(total(o)):''}">${pieceSvg(it)}<span class="dlab"><b>${esc(t.n)}${nr>1?`<span class="rdots">${'<i></i>'.repeat(Math.min(6,nr))}</span>`:''}</b>${o?`<span class="mtag">${fmt(total(o))}<i>${dur(o)}</i></span>`:''}</span></button>`;
+    return `<button class="ft k-${it.k} ${st} ${S.sel===it.id?'sel':''} ${show(it.id)?'':'dim'}" data-sel="${it.id}" style="${pos(it)};${topVars(it,it.k==='darts'?[86,kdim(it).h/2,30,30]:null)}" aria-label="${esc(tname(it.id))} · ${LBL[st]}${o?' · '+fmt(total(o))+' · '+nr+' raunde':''}">${pieceSvg(it)}
       <span class="plab">${lab}${nr>1?`<span class="rdots" title="${nr} raunde">${'<i></i>'.repeat(Math.min(6,nr))}</span>`:''}</span>${o?`<span class="mtag">${fmt(total(o))}<i>${dur(o)}</i></span>`:''}</button>`;
   }).join('');
   const bar=A?`<div class="arrbar"><p>Tërhiqi tavolinat, separenë, banakun dhe pikadon aty ku janë në lokal. Prek një për ta rrotulluar ose për t'i ndryshuar formën.</p>
       <span class="rl">Thellësia e sallës</span><span class="step"><button data-act="proomh" data-dir="-40" aria-label="Më e cekët">${I.minus}</button><button data-act="proomh" data-dir="40" aria-label="Më e thellë">${I.plus}</button></span>
       <button class="btn pri" data-act="arrdone">${I.ok}Gati</button></div>`:'';
-  return `${bar}<div class="room ${A?'arr':''}" style="--rh:${pl.h||620}">${fx}${tb}</div>
+  return `${bar}<div class="room ${A?'arr':''} ${P?'portrait':''}" style="${P?`aspect-ratio:${H}/1000;--u:calc(100cqw / ${H})`:`--rh:${H}`}">${fx}${tb}</div>
     ${A?'':`<div class="legend"><span><i></i>E lirë</span><span><i class="o"></i>E zënë</span>${Object.values(S.orders).some(o=>o.status==='bill')?'<span><i class="b"></i>Fatura</span>':''}</div>`}`;
 }
 let PDRAG=null;
