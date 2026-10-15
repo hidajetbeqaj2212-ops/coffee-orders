@@ -945,14 +945,14 @@ select.ai{appearance:auto}
 .ft .tsh{fill:rgba(60,40,20,.10)}
 .ft.open .tt{fill:var(--busy); stroke:var(--busy-2)}
 .ft.bill .tt{fill:var(--orange); stroke:#000}
-.ft .sf{fill:#b5bbbf} .ft .sfb{fill:#9aa2a8} .ft .fr{fill:#c99a62} .ft .frd{fill:#b4844d}
+.ft .sf{fill:#e4e2dd} .ft .sfb{fill:#c9c6bf} .ft .fr{fill:#c99a62} .ft .frd{fill:#b4844d}
 .ft .rug{fill:#ece4d6; stroke:#e0d4c1; stroke-width:6}
 .ft .ctr{fill:#3a2f27} .ft .ctrt{fill:#4b3e33} .ft .led{fill:none; stroke:#f3b765; stroke-width:4; stroke-linecap:round; opacity:.9}
 .ft .stl{fill:#e6dccd; stroke:#b8a68c; stroke-width:2} .ft .stli{fill:#cbbba3}
 .ft .colm{fill:#3b2e25} .ft .colt{fill:#4e3d31}
 .ft .ctin{fill:#5b4c40} .ft .bbar{fill:#3a2f27}
-.ft .lane{fill:rgba(255,255,255,.55); stroke:var(--chair-2); stroke-width:2; stroke-dasharray:8 6} .ft.open .lane{fill:rgba(255,90,31,.10); stroke:var(--busy)}
-.ft .oche{stroke:var(--ink-2); stroke-width:2.5; stroke-linecap:round} .ft .dmach{fill:#121212} .ft .db1{fill:#121212} .ft .db2{fill:#e23b3b} .ft .db3{fill:#fff}
+.ft .lane{fill:rgba(255,255,255,.35); stroke:var(--chair-2); stroke-width:2; stroke-dasharray:8 6} .ft.open .lane{fill:rgba(255,90,31,.08); stroke:var(--busy); stroke-dasharray:none}
+.ft .oche{stroke:var(--chair-2); stroke-width:3; stroke-linecap:round} .ft .db1{fill:#fff; stroke:var(--ink); stroke-width:2.5} .ft .db2{fill:none; stroke:var(--busy); stroke-width:5} .ft .db3{fill:var(--ink)}
 .ft .pwall{fill:var(--chair-2)}
 .ft.k-counter.fxc{pointer-events:none}
 .ft.k-counter .fxl{left:61%; top:38%; font-size:clamp(11px,1.2cqw,14px); color:#e9dccb}
@@ -962,7 +962,7 @@ select.ai{appearance:auto}
 .seat.bill{background:var(--orange); color:#fff; box-shadow:none}
 .seat.sel{outline:3px solid var(--ink); outline-offset:3px}
 .seat.dim{opacity:.28}
-.seat .sp{position:absolute; left:50%; top:50%; transform:translate(calc(-50% + var(--nx) * max(52px,5.6cqw)), calc(-50% + var(--ny) * max(34px,3.6cqw))); padding:3px 8px; border-radius:8px; background:var(--busy-2); color:var(--busy-ink,#fff); font-size:clamp(11px,1.2cqw,13px); font-weight:800; white-space:nowrap; pointer-events:none}
+.seat .sp{box-shadow:0 4px 10px rgba(0,0,0,.18); position:absolute; left:50%; top:50%; transform:translate(calc(-50% + var(--nx) * max(52px,5.6cqw)), calc(-50% + var(--ny) * max(34px,3.6cqw))); padding:3px 8px; border-radius:9px; background:var(--ink); color:#fff; font-size:clamp(12px,1.35cqw,15px); font-weight:800; white-space:nowrap; pointer-events:none}
 .ft .dr{fill:none; stroke:#c9baa5; stroke-width:3; stroke-dasharray:7 6} .ft .drw{fill:#c9baa5}
 .ft.fx{pointer-events:none}
 .ft .fxl{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:clamp(11px,1.3cqw,15px); font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:#d8cbb8; white-space:nowrap; pointer-events:none}
@@ -1006,6 +1006,19 @@ button.ft:active{transform:scale(.98)}
 .tlist{display:none}
 .plan-only{display:block}
 .pvt{display:none}
+/* labels on the plan: the number sits on the table, the money hangs off it as a tag */
+.plab{position:absolute; left:calc(50% + var(--cx,0) * .1cqw); top:calc(50% + var(--cy,0) * .1cqw); transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:5px; line-height:1; pointer-events:none}
+.plab b{font-size:clamp(20px,3cqw,36px); font-weight:800; letter-spacing:-.03em; color:var(--mute)}
+.plab b.nm{font-size:clamp(11px,1.3cqw,14px); letter-spacing:.1em; text-transform:uppercase}
+.ft.open .plab b,.ft.bill .plab b{color:#fff}
+.ft.k-darts.open .plab b{color:var(--busy-2)}
+.rdots{display:flex; gap:4px}
+.rdots i{width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.9)}
+.ft.k-darts .rdots i{background:var(--busy)}
+.mtag{position:absolute; left:calc(50% + var(--cx,0) * .1cqw); top:calc(50% + var(--cy,0) * .1cqw + max(var(--tb,40) * .1cqw, 30px)); transform:translate(-50%,-50%); display:flex; align-items:baseline; gap:6px; padding:4px 9px; border-radius:9px; background:var(--ink); color:#fff; font-size:clamp(12px,1.35cqw,15px); font-weight:800; white-space:nowrap; box-shadow:0 4px 10px rgba(0,0,0,.18); pointer-events:none}
+.mtag i{font-style:normal; font-weight:600; opacity:.6; font-size:.86em}
+.room:not(.arr) .ft.sel .tt{stroke:var(--ink); stroke-width:4}
+.room:not(.arr) .ft.k-darts.sel .lane{stroke:var(--ink); stroke-width:3}
 @media (max-width:720px){
   /* phones: the room keeps a readable size and scrolls sideways; a switch flips to the plain list */
   .plan-wrap{overflow-x:auto; margin-inline:-16px; padding:2px 16px 6px; -webkit-overflow-scrolling:touch; scrollbar-width:none}
@@ -1086,21 +1099,24 @@ const M=Object.fromEntries(MENU.map(m=>[m.id,m]));
 /* Room: 6 tables + 1 separe (sofa lounge), placed on a floor plan the owner can arrange. Plus takeaway.
    Plan units: the room is 1000 wide and plan.h tall; x/y are the centre of each piece. */
 const PLAN_KINDS={
-  sq4:{w:168,h:168,s:4,l:'Katrore · 4 karrige'}, sq2:{w:164,h:88,s:2,l:'Katrore · 2 karrige'},
-  round:{w:176,h:176,s:4,l:'E rrumbullakët'}, rect:{w:240,h:168,s:6,l:'E gjatë · 6 karrige'},
-  high:{w:150,h:150,s:4,l:'E lartë · 4 stola'}, stand:{w:130,h:130,s:3,l:'Në këmbë · 3 stola'},
-  sofa:{w:240,h:168,s:6,l:'Divanë · 6 vende'}, counter:{w:232,h:236,s:6,l:'Banaku'}, darts:{w:240,h:96,s:4,l:'Kënd i lojës'},
+  sq4:{w:196,h:196,s:4,l:'Katrore · 4 karrige'}, sq2:{w:184,h:104,s:2,l:'Katrore · 2 karrige'},
+  round:{w:200,h:200,s:4,l:'E rrumbullakët'}, rect:{w:264,h:188,s:6,l:'E gjatë · 6 karrige'},
+  high:{w:164,h:164,s:4,l:'E lartë · 4 stola'}, stand:{w:146,h:146,s:3,l:'Në këmbë · 3 stola'},
+  sofa:{w:330,h:190,s:6,l:'Divanë · 6 vende'}, counter:{w:232,h:236,s:6,l:'Banaku'}, darts:{w:250,h:100,s:4,l:'Kënd i lojës'},
   col:{w:48,h:48,l:''}, wall:{w:6,h:180,l:''}, door:{w:104,h:104,l:'Hyrja'}};
+/* where the label and the money tag sit on each piece: local centre x, y and half width/height of the top */
+const PLAN_TOP={sq4:(w,h)=>[w/2,h/2,60,60], sq2:(w,h)=>[w/2,h/2,48,48], round:(w,h)=>[w/2,h/2,58,58], rect:(w,h)=>[w/2,h/2,90,52],
+  high:(w,h)=>[w/2,h/2,40,40], stand:(w,h)=>[w/2,h/2,36,36], sofa:(w,h)=>[w/2,62+(h-62)/2,62,33], darts:(w,h)=>[(48+w-44)/2,h/2-10,70,30]};
 const TABLE_SHAPES=['sq4','sq2','round','rect','high','stand'];
 const PLAN_GROUP=k=>k==='sofa'||k==='counter'||k==='darts'?k:'t';
 /* Default room from the owner's floor plan (WC left out): 6 tables, entrance on the left wall,
    the bar counter pushed up into the top-right corner (people sit and order there, every stool is its own tab),
    darts below it, and the separe in the bottom-right nook behind a short partition wall. */
-const DEF_PLAN={h:670,
-  tables:[{id:'t1',no:1,k:'sq4',x:132,y:104,r:0},{id:'t2',no:2,k:'sq4',x:409,y:157,r:0},{id:'t3',no:3,k:'sq4',x:256,y:339,r:0},
-          {id:'t4',no:4,k:'sq4',x:541,y:370,r:0},{id:'t5',no:5,k:'sq4',x:99,y:530,r:0},{id:'t6',no:6,k:'sq4',x:397,y:545,r:0},
-          {id:'t7',no:1,k:'sofa',x:868,y:578,r:0},{id:'t8',no:1,k:'counter',x:876,y:157,r:0,seats:6},{id:'t9',no:1,k:'darts',x:862,y:370,r:0}],
-  fixtures:[{id:'door',k:'door',x:56,y:270,r:90},{id:'wall1',k:'wall',x:732,y:574,r:0}]};
+const DEF_PLAN={h:728,
+  tables:[{id:'t1',no:1,k:'sq4',x:132,y:112,r:0},{id:'t2',no:2,k:'sq4',x:409,y:172,r:0},{id:'t3',no:3,k:'sq4',x:256,y:372,r:0},
+          {id:'t4',no:4,k:'sq4',x:548,y:402,r:0},{id:'t5',no:5,k:'sq4',x:110,y:590,r:0},{id:'t6',no:6,k:'sq4',x:400,y:610,r:0},
+          {id:'t7',no:1,k:'sofa',x:825,y:625,r:0},{id:'t8',no:1,k:'counter',x:876,y:194,r:0,seats:6},{id:'t9',no:1,k:'darts',x:865,y:446,r:0}],
+  fixtures:[{id:'door',k:'door',x:56,y:300,r:90}]};
 const CFG={plan:JSON.parse(JSON.stringify(DEF_PLAN)), staff:['Stafi'], salary:{Stafi:0},
   accounts:[]};
 const TABLES=[], T={};
@@ -1314,7 +1330,7 @@ function tablesView(){
 }
 /* ---- floor plan ---- */
 /* size of a piece in plan units; the bar counter gets taller with every stool so they all sit along its side */
-const kdim=it=>{ const K=PLAN_KINDS[it.k]||PLAN_KINDS.sq4; return it.k==='counter'?{w:K.w,h:Math.max(180,Math.min(10,Math.max(1,it.seats||6))*46+24)}:{w:K.w,h:K.h}; };
+const kdim=it=>{ const K=PLAN_KINDS[it.k]||PLAN_KINDS.sq4; return it.k==='counter'?{w:K.w,h:Math.max(180,Math.min(10,Math.max(1,it.seats||6))*58+24)}:{w:K.w,h:K.h}; };
 const pdim=it=>{ const K=kdim(it); return it.r%180?[K.h,K.w]:[K.w,K.h]; };
 /* Bar counter: L-shaped, closed behind (staff area enclosed by the back bar). Stools sit along the two outer sides. */
 function counterSeats(it){
@@ -1336,36 +1352,40 @@ function chairs(cx,cy,ang,len){ /* one chair pushed against the table edge, faci
 function pieceSvg(it,bare){
   const K=kdim(it), w=K.w, h=K.h, [bw,bh]=pdim(it);
   let g='';
-  if(it.k==='sq4'){ const t=92, o=(w-t)/2; g=`${chairs(w/2,o-20,0)}${chairs(w/2,h-o+20,180)}${chairs(o-20,h/2,-90)}${chairs(w-o+20,h/2,90)}<rect class="tsh" x="${o+3}" y="${o+5}" width="${t}" height="${t}" rx="12"/><rect class="tt" x="${o}" y="${o}" width="${t}" height="${t}" rx="12"/>`; }
-  else if(it.k==='sq2'){ const t=84, o=(w-t)/2; g=`${chairs(o-20,h/2,-90)}${chairs(w-o+20,h/2,90)}<rect class="tsh" x="${o+3}" y="${(h-t)/2+5}" width="${t}" height="${t}" rx="12"/><rect class="tt" x="${o}" y="${(h-t)/2}" width="${t}" height="${t}" rx="12"/>`; }
-  else if(it.k==='round'){ const r=50, cx=w/2, cy=h/2; g=[45,135,225,315].map(a=>{ const rad=(a-90)*Math.PI/180; return chairs(cx+Math.cos(rad)*(r+18),cy+Math.sin(rad)*(r+18),a,48); }).join('')+`<circle class="tsh" cx="${cx+3}" cy="${cy+5}" r="${r}"/><circle class="tt" cx="${cx}" cy="${cy}" r="${r}"/>`; }
-  else if(it.k==='rect'){ const tw=164, th=92, ox=(w-tw)/2, oy=(h-th)/2; g=`${chairs(w/2-40,oy-20,0)}${chairs(w/2+40,oy-20,0)}${chairs(w/2-40,h-oy+20,180)}${chairs(w/2+40,h-oy+20,180)}${chairs(ox-20,h/2,-90)}${chairs(w-ox+20,h/2,90)}<rect class="tsh" x="${ox+3}" y="${oy+5}" width="${tw}" height="${th}" rx="12"/><rect class="tt" x="${ox}" y="${oy}" width="${tw}" height="${th}" rx="12"/>`; }
+  if(it.k==='sq4'){ const t=120, o=(w-t)/2; g=`${chairs(w/2,o-20,0)}${chairs(w/2,h-o+20,180)}${chairs(o-20,h/2,-90)}${chairs(w-o+20,h/2,90)}<rect class="tsh" x="${o+3}" y="${o+5}" width="${t}" height="${t}" rx="12"/><rect class="tt" x="${o}" y="${o}" width="${t}" height="${t}" rx="12"/>`; }
+  else if(it.k==='sq2'){ const t=96, o=(w-t)/2; g=`${chairs(o-20,h/2,-90)}${chairs(w-o+20,h/2,90)}<rect class="tsh" x="${o+3}" y="${(h-t)/2+5}" width="${t}" height="${t}" rx="12"/><rect class="tt" x="${o}" y="${(h-t)/2}" width="${t}" height="${t}" rx="12"/>`; }
+  else if(it.k==='round'){ const r=58, cx=w/2, cy=h/2; g=[45,135,225,315].map(a=>{ const rad=(a-90)*Math.PI/180; return chairs(cx+Math.cos(rad)*(r+18),cy+Math.sin(rad)*(r+18),a,48); }).join('')+`<circle class="tsh" cx="${cx+3}" cy="${cy+5}" r="${r}"/><circle class="tt" cx="${cx}" cy="${cy}" r="${r}"/>`; }
+  else if(it.k==='rect'){ const tw=180, th=104, ox=(w-tw)/2, oy=(h-th)/2; g=`${chairs(w/2-40,oy-20,0)}${chairs(w/2+40,oy-20,0)}${chairs(w/2-40,h-oy+20,180)}${chairs(w/2+40,h-oy+20,180)}${chairs(ox-20,h/2,-90)}${chairs(w-ox+20,h/2,90)}<rect class="tsh" x="${ox+3}" y="${oy+5}" width="${tw}" height="${th}" rx="12"/><rect class="tt" x="${ox}" y="${oy}" width="${tw}" height="${th}" rx="12"/>`; }
   else if(it.k==='sofa'){
-    /* U-shaped lounge: long sofas left and right, a short one at the back, low table and rug in the middle */
-    const sofa=(x,y,sw,sh,vertical)=>{ const arm=14, back=16;
-      return vertical
-        ? `<rect class="frd" x="${x}" y="${y}" width="${sw}" height="${sh}" rx="8"/><rect class="sfb" x="${x+(x<w/2?4:sw-back-4)}" y="${y+arm}" width="${back}" height="${sh-2*arm}" rx="6"/>`+[0,1,2].map(i=>`<rect class="sf" x="${x<w/2?x+back+6:x+6}" y="${y+arm+4+i*((sh-2*arm-8)/3)}" width="${sw-back-12}" height="${(sh-2*arm-8)/3-4}" rx="8"/>`).join('')+`<rect class="fr" x="${x}" y="${y}" width="${sw}" height="${arm}" rx="6"/><rect class="fr" x="${x}" y="${y+sh-arm}" width="${sw}" height="${arm}" rx="6"/>`
-        : `<rect class="frd" x="${x}" y="${y}" width="${sw}" height="${sh}" rx="8"/><rect class="sfb" x="${x+arm}" y="${y+4}" width="${sw-2*arm}" height="${back}" rx="6"/>`+[0,1].map(i=>`<rect class="sf" x="${x+arm+4+i*((sw-2*arm-8)/2)}" y="${y+back+6}" width="${(sw-2*arm-8)/2-4}" height="${sh-back-12}" rx="8"/>`).join('')+`<rect class="fr" x="${x}" y="${y}" width="${arm}" height="${sh}" rx="6"/><rect class="fr" x="${x+sw-arm}" y="${y}" width="${arm}" height="${sh}" rx="6"/>`; };
-    g=`<rect class="rug" x="38" y="34" width="${w-76}" height="${h-44}" rx="8"/>`
-      +sofa(0,6,56,h-6,true)+sofa(w-56,6,56,h-6,true)+sofa(64,0,w-128,56,false)
-      +`<rect class="tsh" x="${w/2-44+3}" y="${h/2-6+5}" width="88" height="60" rx="8"/><rect class="tt" x="${w/2-44}" y="${h/2-6}" width="88" height="60" rx="8"/>`;
+    /* upholstered U lounge: a long sofa against the wall, two short returns, low table in the middle */
+    const bk=22, d=62, ct=[w/2-62,62+(h-62)/2-33,124,66];
+    const cush=(x,y,cw,chh)=>`<rect class="sf" x="${x}" y="${y}" width="${cw}" height="${chh}" rx="9"/>`;
+    g=`<rect class="sfb" x="0" y="0" width="${w}" height="${d}" rx="14"/><rect class="sfb" x="0" y="0" width="${d}" height="${h}" rx="14"/><rect class="sfb" x="${w-d}" y="0" width="${d}" height="${h}" rx="14"/>`
+      +[0,1,2].map(i=>cush(d+4+i*((w-2*d-8)/3),bk+2,(w-2*d-8)/3-4,d-bk-6)).join('')
+      +cush(bk+2,bk+2,d-bk-6,d-bk-6)+cush(w-d+4,bk+2,d-bk-6,d-bk-6)
+      +[0,1].map(i=>cush(bk+2,d+4+i*((h-d-12)/2),d-bk-6,(h-d-12)/2-4)).join('')+[0,1].map(i=>cush(w-d+4,d+4+i*((h-d-12)/2),d-bk-6,(h-d-12)/2-4)).join('')
+      +`<rect class="tsh" x="${ct[0]+3}" y="${ct[1]+5}" width="${ct[2]}" height="${ct[3]}" rx="10"/><rect class="tt" x="${ct[0]}" y="${ct[1]}" width="${ct[2]}" height="${ct[3]}" rx="10"/>`;
   }
   else if(it.k==='high'||it.k==='stand'){ const cx=w/2, cy=h/2, stool=(x,y)=>`<circle class="stl" cx="${x}" cy="${y}" r="17"/><circle class="stli" cx="${x}" cy="${y}" r="8"/>`;
     g = it.k==='high'
-      ? [[cx,16+4],[cx,h-20],[20,cy],[w-20,cy]].map(([x,y])=>stool(x,y)).join('')+`<rect class="tsh" x="${cx-33}" y="${cy-30}" width="66" height="66" rx="8"/><rect class="tt" x="${cx-35}" y="${cy-35}" width="70" height="70" rx="8"/>`
-      : [270,30,150].map(a=>{ const r=(a)*Math.PI/180; return stool(cx+Math.cos(r)*46,cy+Math.sin(r)*46); }).join('')+`<circle class="tsh" cx="${cx+3}" cy="${cy+5}" r="30"/><circle class="tt" cx="${cx}" cy="${cy}" r="30"/>`; }
+      ? [[cx,18],[cx,h-18],[18,cy],[w-18,cy]].map(([x,y])=>stool(x,y)).join('')+`<rect class="tsh" x="${cx-37}" y="${cy-35}" width="80" height="80" rx="10"/><rect class="tt" x="${cx-40}" y="${cy-40}" width="80" height="80" rx="10"/>`
+      : [270,30,150].map(a=>{ const r=(a)*Math.PI/180; return stool(cx+Math.cos(r)*54,cy+Math.sin(r)*54); }).join('')+`<circle class="tsh" cx="${cx+3}" cy="${cy+5}" r="36"/><circle class="tt" cx="${cx}" cy="${cy}" r="36"/>`; }
   else if(it.k==='counter'){ const t=56, L=44, B=h, bb=20;
     g=`<rect class="ctin" x="${L}" y="0" width="${w-L}" height="${B}" rx="6"/><path class="bbar" d="M ${L+t} 0 H ${w} V ${B-t} H ${w-bb} V ${bb} H ${L+t} Z"/>`
       +`<path class="ctr" d="M ${L} 0 H ${L+t} V ${B-t} H ${w} V ${B} H ${L} Z"/><path class="ctrt" d="M ${L+8} 8 H ${L+t-8} V ${B-t+8} H ${w-8} V ${B-8} H ${L+8} Z"/><path class="led" d="M ${L} 4 V ${B} H ${w-4}"/>`
       +(bare?'':counterSeats(it).map(p=>`<circle class="stl" cx="${p.lx}" cy="${p.ly}" r="17"/>`).join('')); }
-  else if(it.k==='darts'){ /* board on the wall (right), throw line on the floor, lane between */
-    const bx=w-16, by=h/2;
-    g=`<rect class="lane" x="0" y="0" width="${w}" height="${h}" rx="10"/><line class="oche" x1="46" y1="10" x2="46" y2="${h-10}"/>`
-      +`<rect class="dmach" x="${w-12}" y="${by-40}" width="12" height="80" rx="3"/><circle class="db1" cx="${bx}" cy="${by}" r="24"/><circle class="db2" cx="${bx}" cy="${by}" r="16"/><circle class="db3" cx="${bx}" cy="${by}" r="5"/>`; }
+  else if(it.k==='darts'){ /* play area: board on the wall (right), throw line on the floor */
+    const bx=w-30, by=h/2;
+    g=`<rect class="lane" x="1" y="1" width="${w-2}" height="${h-2}" rx="14"/><line class="oche" x1="44" y1="18" x2="44" y2="${h-18}"/>`
+      +`<circle class="db1" cx="${bx}" cy="${by}" r="22"/><circle class="db2" cx="${bx}" cy="${by}" r="14"/><circle class="db3" cx="${bx}" cy="${by}" r="5"/>`; }
   else if(it.k==='wall'){ g=`<rect class="pwall" x="0" y="0" width="${w}" height="${h}" rx="3"/>`; }
   else if(it.k==='col'){ g=`<rect class="colm" x="0" y="0" width="${w}" height="${h}" rx="4"/><rect class="colt" x="7" y="7" width="${w-14}" height="${h-14}" rx="2"/>`; }
   else if(it.k==='door'){ g=`<rect class="drw" x="0" y="${h-8}" width="${w}" height="8" rx="3"/><path class="dr" d="M ${w} ${h-8} A ${w} ${w} 0 0 0 0 ${h-8-w}"/><line x1="0" y1="${h-8}" x2="0" y2="${h-8-w}" stroke="#c9baa5" stroke-width="5" stroke-linecap="round"/>`; }
   return `<svg viewBox="0 0 ${bw} ${bh}" aria-hidden="true"><g transform="translate(${bw/2} ${bh/2}) rotate(${it.r||0})${it.m?' scale(-1 1)':''} translate(${-w/2} ${-h/2})">${g}</g></svg>`;
+}
+function topVars(it){
+  const K=kdim(it), f=PLAN_TOP[it.k], b=f?f(K.w,K.h):[K.w/2,K.h/2,K.w/2,K.h/2], q=toPlan(it,b[0],b[1],0,0);
+  return `--cx:${Math.round(q.x-it.x)};--cy:${Math.round(q.y-it.y)};--tb:${(it.r||0)%180?b[2]:b[3]}`;
 }
 function planView(){
   const A=S.arrange&&S.admin, pl=CFG.plan;
@@ -1381,9 +1401,10 @@ function planView(){
         const q=toPlan(it,p.lx,p.ly,p.nx,p.ny), o=S.orders[p.id], st=status(p.id);
         return `<button class="seat ${st} ${S.sel===p.id?'sel':''} ${show(p.id)?'':'dim'}" data-sel="${p.id}" style="--x:${Math.round(q.x)};--y:${Math.round(q.y)};--nx:${q.nx};--ny:${q.ny}" aria-label="${esc(tname(p.id))} · ${LBL[st]}${o?' · '+fmt(total(o)):''}">${p.i}${o?`<span class="sp">${fmt(total(o))}</span>`:''}</button>`; }).join('');
     }
-    const o=S.orders[it.id], st=status(it.id);
-    return `<button class="ft k-${it.k} ${st} ${S.sel===it.id?'sel':''} ${show(it.id)?'':'dim'}" data-sel="${it.id}" style="${pos(it)}" aria-label="${esc(tname(it.id))} · ${LBL[st]}${o?' · '+fmt(total(o)):''}">${pieceSvg(it)}
-      <span class="fc"><span class="fn ${it.k==='sofa'?'sep':''}">${esc(t.n)}</span>${o?`<span class="fa">${fmt(total(o))}</span><span class="fm">${dur(o)}</span>`:`<span class="fm">E lirë</span>`}</span></button>`;
+    const o=S.orders[it.id], st=status(it.id), nr=o?savedRounds(o):0;
+    const lab=it.k==='sofa'||it.k==='darts'?`<b class="nm">${esc(t.n)}</b>`:`<b>${esc(t.n)}</b>`;
+    return `<button class="ft k-${it.k} ${st} ${S.sel===it.id?'sel':''} ${show(it.id)?'':'dim'}" data-sel="${it.id}" style="${pos(it)};${topVars(it)}" aria-label="${esc(tname(it.id))} · ${LBL[st]}${o?' · '+fmt(total(o))+' · '+nr+' raunde':''}">${pieceSvg(it)}
+      <span class="plab">${lab}${nr>1?`<span class="rdots" title="${nr} raunde">${'<i></i>'.repeat(Math.min(6,nr))}</span>`:''}</span>${o?`<span class="mtag">${fmt(total(o))}<i>${dur(o)}</i></span>`:''}</button>`;
   }).join('');
   const bar=A?`<div class="arrbar"><p>Tërhiqi tavolinat, separenë, banakun dhe pikadon aty ku janë në lokal. Prek një për ta rrotulluar ose për t'i ndryshuar formën.</p>
       <span class="rl">Thellësia e sallës</span><span class="step"><button data-act="proomh" data-dir="-40" aria-label="Më e cekët">${I.minus}</button><button data-act="proomh" data-dir="40" aria-label="Më e thellë">${I.plus}</button></span>
