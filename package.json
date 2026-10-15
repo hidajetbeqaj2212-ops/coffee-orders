@@ -1,6 +1,6 @@
 {
   "name": "coffee-orders",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "XBar — sistemi i porosive",
   "main": "electron/main.js",
   "scripts": {

@@ -1426,7 +1426,11 @@ const PHONE=window.matchMedia?matchMedia('(max-width:720px)'):{matches:false};
 try{ PHONE.addEventListener('change',()=>{ if(S.view==='tables') render(); }); }catch(_){}
 function planView(){
   const A=S.arrange&&S.admin, pl=CFG.plan, H=pl.h||620, P=PHONE.matches&&!A;
-  const tf=it=>P?{...it, x:it.y, y:1000-it.x, r:((it.r||0)+270)%360}:it; /* turned so the entrance is at the bottom and the bar at the top */
+  /* bar PC / laptop: the room is stretched to fill the screen height; pieces keep their size,
+     the space between them grows, and anything against a wall stays against it */
+  const Hd=!P&&!A&&S.fitH?Math.round(Math.max(H,Math.min(S.fitH,H*1.7))):H;
+  const fit=it=>{ if(Hd===H) return it; const bh=pdim(it)[1]; return {...it, y:bh/2+(it.y-bh/2)*(Hd-bh)/(H-bh)}; };
+  const tf=it=>P?{...it, x:it.y, y:1000-it.x, r:((it.r||0)+270)%360}:fit(it); /* phone: turned so the entrance is at the bottom and the bar at the top */
   const show=id=>S.filter==='all'||status(id)===S.filter;
   const pos=it=>{ const [bw,bh]=pdim(it); return `--x:${it.x};--y:${it.y};--w:${bw};--h:${bh}`; };
   const tools=it=>A&&S.arrSel===it.id?`<span class="ftb ${it.y-pdim(it)[1]/2<90?'below':''}"><button data-act="prot" data-id="${it.id}">${I.repeat}Rrotullo</button>${TABLE_SHAPES.includes(it.k)?`<button data-act="pshape" data-id="${it.id}">${I.grid}Forma</button>`:''}${it.k==='counter'?`<button data-act="pflip" data-id="${it.id}">${I.split}Pasqyro</button>`:''}</span>`:'';
@@ -1448,7 +1452,7 @@ function planView(){
   const bar=A?`<div class="arrbar"><p>Tërhiqi tavolinat, separenë, banakun dhe pikadon aty ku janë në lokal. Prek një për ta rrotulluar ose për t'i ndryshuar formën.</p>
       <span class="rl">Thellësia e sallës</span><span class="step"><button data-act="proomh" data-dir="-40" aria-label="Më e cekët">${I.minus}</button><button data-act="proomh" data-dir="40" aria-label="Më e thellë">${I.plus}</button></span>
       <button class="btn pri" data-act="arrdone">${I.ok}Gati</button></div>`:'';
-  return `${bar}<div class="room ${A?'arr':''} ${P?'portrait':''}" style="${P?`aspect-ratio:${H}/1000;--u:calc(100cqw / ${H})`:`--rh:${H}`}">${fx}${tb}</div>
+  return `${bar}<div class="room ${A?'arr':''} ${P?'portrait':''}" style="${P?`aspect-ratio:${H}/1000;--u:calc(100cqw / ${H})`:`--rh:${Hd}`}">${fx}${tb}</div>
     ${A?'':`<div class="legend"><span><i></i>E lirë</span><span><i class="o"></i>E zënë</span>${Object.values(S.orders).some(o=>o.status==='bill')?'<span><i class="b"></i>Fatura</span>':''}</div>`}`;
 }
 let PDRAG=null;
@@ -1788,6 +1792,16 @@ function adminView(){
     </div>
   </div>`;
 }
+const Hcur=room=>{ const m=/--rh:\s*(\d+)/.exec(room.getAttribute('style')||''); return m?+m[1]:0; };
+function fitRoom(){ /* how deep the room can be drawn so the plan fills the screen below it */
+  const room=root.querySelector('.room:not(.arr):not(.portrait)'); if(!room) return;
+  const w=room.clientWidth, top=room.getBoundingClientRect().top+scrollY, avail=innerHeight-top-64;
+  if(w<300||avail<200) return;
+  const H=CFG.plan.h||620, want=Math.round(1000*avail/w);
+  if(want<H){ room.style.maxWidth=Math.round(avail*1000/H)+'px'; room.style.marginInline='auto'; } /* wide but short screen: keep the whole room on screen */
+  if(Math.abs(want-(S.fitH||0))>8){ S.fitH=want; if(want>H||Hcur(room)>H) render(); }
+}
+let FITT=null; addEventListener('resize',()=>{ clearTimeout(FITT); FITT=setTimeout(()=>{ if(S.view==='tables') fitRoom(); },150); });
 function render(){
   if(PDRAG) return;
   if(S.view!=='tables'||!S.admin){ S.arrange=false; S.arrSel=null; }
@@ -1795,6 +1809,7 @@ function render(){
   const bar=S.view==='order'&&S.orders[S.table];
   root.className='v-'+S.view;
   root.innerHTML=topBar()+`<div class="wrap ${bar?'has-bar':''}">${v}</div>`;
+  fitRoom();
   const oa=root.querySelector('.onav-t [aria-current="true"]'); if(oa){ const t=oa.parentElement; t.scrollLeft=Math.max(0,oa.offsetLeft-t.offsetLeft-40); }
   const q=document.getElementById('q');
   if(q&&S.q){ q.focus(); q.setSelectionRange(q.value.length,q.value.length); }
