@@ -2692,8 +2692,8 @@ document.addEventListener('click',e=>{
   if(d.pv){ S.pv=d.pv; try{ localStorage.setItem('xbar-pv',d.pv); }catch(_){} render(); return; }
   if(d.tadd){ planCount(d.tadd,Number(d.dir)); return; }
   if(d.pseat){ const c=CFG.plan.tables.find(t=>t.k==='counter'); if(!c) return; const cur=c.seats||6, nv=cur+Number(d.pseat);
-    if(nv<1||nv>10) return; if(nv>cur){ const H=CFG.plan.h||620, bh=pdim({...c,seats:nv})[1]; if(c.y+bh/2>H-8) c.y=Math.max(bh/2+8,H-8-bh/2); } if(nv<cur&&S.orders[c.id+'s'+cur]){ toast(`${tname(c.id+'s'+cur)} ka porosi të hapur`); return; }
-    c.seats=nv; buildTables(); saveCfg(); render(); return; }
+    if(nv<1||nv>10) return; if(nv<cur&&S.orders[c.id+'s'+cur]){ toast(`${tname(c.id+'s'+cur)} ka porosi të hapur`); return; }
+    c.seats=nv; planFit(c); buildTables(); saveCfg(); render(); return; }
   if(d.pcol){ const F=CFG.plan.fixtures=CFG.plan.fixtures||[], cols=F.filter(f=>f.k==='col');
     if(Number(d.pcol)>0){ if(cols.length>=8) return; let n=1; while(F.some(f=>f.id==='col'+n)) n++; const [x,y]=planFree('col'); F.push({id:'col'+n,k:'col',x,y,r:0}); }
     else { if(!cols.length) return; F.splice(F.indexOf(cols[cols.length-1]),1); }

@@ -10,7 +10,7 @@ Receipts are order slips ("POROSI", marked *Nuk është kupon fiskal*), not fisc
 
 - **The bar PC is the "server".** All data lives in a SQLite database on that PC (`%APPDATA%\XBar\data\orders.db`), and the app serves the screen to itself on `http://127.0.0.1:4848`.
 - **Every screen stays live.** A change on the bar shows up on the owner's phone within a second, and the other way round.
-- **The floor plan.** *Tavolinat* shows the room from above: 6 tables, 1 separe (a sofa lounge around a low table, counted as one table) and the bar counter. People sit and order at the bar, so every bar stool is its own tab (*Banaku · 1*, *Banaku · 2*, …). Each table and stool shows whether it's free or busy and the running total; tables also show how long they've been open. Tap one to see or take the order.
+- **The floor plan.** *Tavolinat* shows the room from above: 6 tables, 1 separe (a sofa lounge around a low table, counted as one table), the Pikado (darts) corner and the bar counter. People sit and order at the bar, so every bar stool is its own tab (*Banaku · 1*, *Banaku · 2*, …). Each table and stool shows whether it's free or busy and the running total; tables also show how long they've been open. Tap one to see or take the order.
 - **Receipts print without a driver.** The receipt is rendered as an image and sent straight to the 80 mm thermal printer as ESC/POS, over the network (printer IP, port 9100) or USB. Set it in *Zyra → Sistemi*.
 - **Backups** run every night and after every day close. Each one goes to `%APPDATA%\XBar\backups`, plus a copy in `OneDrive\XBar Backups` when OneDrive is signed in. The last 90 are kept.
 - **Updates.** The app checks this repo's GitHub Releases, downloads new versions in the background and installs them the next time it restarts.
@@ -42,7 +42,7 @@ Receipts are order slips ("POROSI", marked *Nuk është kupon fiskal*), not fisc
    - iPhone: *Share → Add to Home Screen*
    - Android: *⋮ → Add to Home screen*
 
-On a phone the tables show as a list instead of the floor plan.
+On a phone the floor plan is turned upright so the whole room fits the screen (entrance at the bottom, bar at the top). *Lista* switches to a plain list.
 
 ## Shipping a new version
 
