@@ -960,7 +960,10 @@ select.ai{appearance:auto}
 .dlab .mtag{position:static; transform:none}
 .ft .pwall{fill:var(--chair-2)}
 .ft.k-counter.fxc{pointer-events:none}
-.ft.k-counter .fxl{left:61%; top:38%; font-size:clamp(11px,1.2cqw,14px); color:#dde1e7}
+.clab{position:absolute; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:6px; pointer-events:none; text-align:center; white-space:nowrap}
+.clab b{font-size:clamp(15px,2.1cqw,24px); font-weight:800; letter-spacing:-.02em; color:#fff; line-height:1}
+.clab small{font-size:clamp(11px,1.25cqw,14px); font-weight:700; color:rgba(255,255,255,.6); font-variant-numeric:tabular-nums}
+.clab em{font-style:normal; color:var(--busy)}
 .seat{position:absolute; left:calc(var(--x) * .1cqw); top:calc(var(--y) * .1cqw); width:max(30px,3.6cqw); height:max(30px,3.6cqw); transform:translate(-50%,-50%); border-radius:50%; background:var(--top); box-shadow:inset 0 0 0 2px var(--chair-2), 0 2px 6px rgba(17,24,39,.12); display:grid; place-items:center; font-weight:800; font-size:clamp(12px,1.35cqw,15px); color:var(--ink-2); z-index:2; transition:transform .12s}
 .seat:hover{transform:translate(-50%,-50%) scale(1.08)}
 .seat.open{background:var(--busy); color:var(--busy-ink,#fff); box-shadow:0 4px 12px rgba(0,0,0,.18)}
@@ -1014,7 +1017,8 @@ button.ft:active{transform:scale(.98)}
 /* labels on the plan: the number sits on the table, the money hangs off it as a tag */
 .plab{position:absolute; left:calc(50% + var(--cx,0) * .1cqw); top:calc(50% + var(--cy,0) * .1cqw); transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:5px; line-height:1; pointer-events:none}
 .plab b{font-size:clamp(20px,3cqw,36px); font-weight:800; letter-spacing:-.03em; color:var(--mute)}
-.plab b.nm{font-size:clamp(11px,1.3cqw,14px); letter-spacing:.1em; text-transform:uppercase}
+.plab b.nm{font-size:clamp(15px,2.1cqw,24px); letter-spacing:-.02em}
+.ft.k-sofa:not(.open):not(.bill) .plab b{color:var(--ink)}
 .ft.open .plab b,.ft.bill .plab b{color:#fff}
 .ft.k-darts.open .plab b{color:var(--busy-2)}
 .rdots{display:flex; gap:4px}
@@ -1120,7 +1124,7 @@ const PLAN_GROUP=k=>k==='sofa'||k==='counter'||k==='darts'?k:'t';
 const DEF_PLAN={h:728,
   tables:[{id:'t1',no:1,k:'sq4',x:132,y:112,r:0},{id:'t2',no:2,k:'sq4',x:409,y:172,r:0},{id:'t3',no:3,k:'sq4',x:256,y:372,r:0},
           {id:'t4',no:4,k:'sq4',x:548,y:402,r:0},{id:'t5',no:5,k:'sq4',x:110,y:590,r:0},{id:'t6',no:6,k:'sq4',x:400,y:610,r:0},
-          {id:'t7',no:1,k:'sofa',x:825,y:625,r:0},{id:'t8',no:1,k:'counter',x:876,y:194,r:0,seats:6},{id:'t9',no:1,k:'darts',x:865,y:446,r:0}],
+          {id:'t7',no:1,k:'sofa',x:825,y:625,r:0},{id:'t8',no:1,k:'counter',x:884,y:186,r:0,seats:6},{id:'t9',no:1,k:'darts',x:865,y:446,r:0}],
   fixtures:[{id:'door',k:'door',x:56,y:300,r:90}]};
 const CFG={plan:JSON.parse(JSON.stringify(DEF_PLAN)), staff:['Stafi'], salary:{Stafi:0},
   accounts:[]};
@@ -1375,9 +1379,10 @@ function pieceSvg(it,bare){
     g = it.k==='high'
       ? [[cx,18],[cx,h-18],[18,cy],[w-18,cy]].map(([x,y])=>stool(x,y)).join('')+`<rect class="tsh" x="${cx-37}" y="${cy-35}" width="80" height="80" rx="10"/><rect class="tt" x="${cx-40}" y="${cy-40}" width="80" height="80" rx="10"/>`
       : [270,30,150].map(a=>{ const r=(a)*Math.PI/180; return stool(cx+Math.cos(r)*54,cy+Math.sin(r)*54); }).join('')+`<circle class="tsh" cx="${cx+3}" cy="${cy+5}" r="36"/><circle class="tt" cx="${cx}" cy="${cy}" r="36"/>`; }
-  else if(it.k==='counter'){ const t=56, L=44, B=h, bb=20;
-    g=`<rect class="ctin" x="${L}" y="0" width="${w-L}" height="${B}" rx="6"/><path class="bbar" d="M ${L+t} 0 H ${w} V ${B-t} H ${w-bb} V ${bb} H ${L+t} Z"/>`
-      +`<path class="ctr" d="M ${L} 0 H ${L+t} V ${B-t} H ${w} V ${B} H ${L} Z"/><path class="ctrt" d="M ${L+8} 8 H ${L+t-8} V ${B-t+8} H ${w-8} V ${B-8} H ${L+8} Z"/><path class="led" d="M ${L} 4 V ${B} H ${w-4}"/>`
+  else if(it.k==='counter'){ const t=56, L=44, B=h, r=14;
+    g=`<path class="ctr" d="M ${L} 0 H ${w} V ${B} H ${L+r} Q ${L} ${B} ${L} ${B-r} Z"/>`
+      +`<rect class="ctin" x="${L+t}" y="0" width="${w-L-t}" height="${B-t}"/>`
+      +`<path class="led" d="M ${L+1.5} 0 V ${B-r} Q ${L+1.5} ${B-1.5} ${L+r} ${B-1.5} H ${w}"/>`
       +(bare?'':counterSeats(it).map(p=>`<circle class="stl" cx="${p.lx}" cy="${p.ly}" r="17"/>`).join('')); }
   else if(it.k==='darts'){ /* play zone with a dartboard icon on the right, centred */
     const by=h/2, bx=w-28-30;
@@ -1402,7 +1407,7 @@ function planView(){
     const t=it.k==='counter'?{n:'Banaku'}:T[it.id]; if(!t) return '';
     if(A) return `<div class="ft k-${it.k} free ${S.arrSel===it.id?'on':''}" data-ft="${it.id}" style="${pos(it)}">${pieceSvg(it)}<span class="fc"><span class="fn ${it.k==='sofa'||it.k==='counter'?'sep':''}">${esc(t.n)}</span><span class="fm">${it.k==='counter'?(it.seats||6)+' stola':PLAN_KINDS[it.k].l}</span></span>${tools(it)}</div>`;
     if(it.k==='counter'){ const seats=counterSeats(it), busy=seats.filter(p=>S.orders[p.id]).length;
-      return `<div class="ft k-counter fxc" style="${pos(it)}">${pieceSvg(it,true)}<span class="fxl">${esc(T[it.id+'s1']?T[it.id+'s1'].nm.split(' · ')[0]:'Banaku')}${busy?` · ${busy}/${seats.length}`:''}</span></div>`+seats.map(p=>{
+      return `<div class="ft k-counter fxc" style="${pos(it)}">${pieceSvg(it,true)}<span class="clab" style="left:${((44+56+kdim(it).w)/2/kdim(it).w*100).toFixed(1)}%;top:${((kdim(it).h-56)/2/kdim(it).h*100).toFixed(1)}%"><b>${esc(T[it.id+'s1']?T[it.id+'s1'].nm.split(' · ')[0]:'Banaku')}</b><small>${busy?`<em>${busy}</em> / ${seats.length} të zënë`:`${seats.length} stola`}</small></span></div>`+seats.map(p=>{
         const q=toPlan(it,p.lx,p.ly,p.nx,p.ny), o=S.orders[p.id], st=status(p.id);
         return `<button class="seat ${st} ${S.sel===p.id?'sel':''} ${show(p.id)?'':'dim'}" data-sel="${p.id}" style="--x:${Math.round(q.x)};--y:${Math.round(q.y)};--nx:${q.nx};--ny:${q.ny}" aria-label="${esc(tname(p.id))} · ${LBL[st]}${o?' · '+fmt(total(o)):''}">${p.i}${o?`<span class="sp">${fmt(total(o))}</span>`:''}</button>`; }).join('');
     }
@@ -1434,13 +1439,13 @@ document.addEventListener('pointermove',e=>{
   if(!d.moved&&Math.hypot(e.clientX-d.sx,e.clientY-d.sy)<6) return;
   if(!d.moved){ d.moved=true; d.el.classList.add('drag'); }
   const [bw,bh]=pdim(d.it), H=CFG.plan.h||620, snap=v=>Math.round(v/10)*10;
-  d.it.x=Math.min(1000-bw/2-8,Math.max(bw/2+8,snap(d.ox+dx)));
-  d.it.y=Math.min(H-bh/2-8,Math.max(bh/2+8,snap(d.oy+dy)));
+  d.it.x=Math.min(1000-bw/2,Math.max(bw/2,snap(d.ox+dx)));
+  d.it.y=Math.min(H-bh/2,Math.max(bh/2,snap(d.oy+dy)));
   d.el.style.setProperty('--x',d.it.x); d.el.style.setProperty('--y',d.it.y);
 });
 const pdrop=()=>{ const d=PDRAG; if(!d) return; PDRAG=null; if(d.moved) saveCfg(); else S.arrSel=S.arrSel===d.it.id?null:d.it.id; render(); };
 document.addEventListener('pointerup',pdrop); document.addEventListener('pointercancel',pdrop);
-function planFit(it){ const [bw,bh]=pdim(it), H=CFG.plan.h||620; it.x=Math.min(1000-bw/2-8,Math.max(bw/2+8,it.x)); it.y=Math.min(H-bh/2-8,Math.max(bh/2+8,it.y)); }
+function planFit(it){ const [bw,bh]=pdim(it), H=CFG.plan.h||620; it.x=Math.min(1000-bw/2,Math.max(bw/2,it.x)); it.y=Math.min(H-bh/2,Math.max(bh/2,it.y)); }
 function planFree(k){ /* first spot where a new piece doesn't overlap anything */
   const K=PLAN_KINDS[k], H=CFG.plan.h||620, all=planItems();
   for(let y=K.h/2+20;y<=H-K.h/2-10;y+=20) for(let x=K.w/2+20;x<=1000-K.w/2-10;x+=20){
