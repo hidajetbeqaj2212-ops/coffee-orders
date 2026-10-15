@@ -1000,9 +1000,18 @@ button.ft:active{transform:scale(.98)}
 .legend i.o{background:var(--busy); box-shadow:none} .legend i.b{background:var(--orange); box-shadow:none}
 .tlist{display:none}
 .plan-only{display:block}
+.pvt{display:none}
 @media (max-width:720px){
-  .plan-wrap{display:none} .tlist{display:block}
-  .arrbar{display:none}
+  /* phones: the room keeps a readable size and scrolls sideways; a switch flips to the plain list */
+  .plan-wrap{overflow-x:auto; margin-inline:-16px; padding:2px 16px 6px; -webkit-overflow-scrolling:touch; scrollbar-width:none}
+  .plan-wrap::-webkit-scrollbar{display:none}
+  .plan-wrap .room{min-width:600px}
+  .tv.pv-list .plan-wrap{display:none} .tv.pv-list .tlist{display:block}
+  .pvt{display:grid; grid-template-columns:1fr 1fr; gap:4px; padding:4px; border-radius:14px; background:var(--soft); margin-bottom:14px}
+  .pvt button{height:44px; border-radius:11px; font-weight:800; color:var(--ink-2)}
+  .pvt button[aria-pressed="true"]{background:var(--card); color:var(--ink); box-shadow:var(--sh)}
+  .arrbar{padding:12px 14px} .arrbar p{min-width:0; flex-basis:100%}
+  .legend{margin-top:10px}
 }
 .cnt-row .ttl small{display:block}
 .btn.arr-go{margin-top:6px}
@@ -1159,7 +1168,7 @@ const I={
 };
 
 const S={
-  view:'tables', counted:null, leftFloat:null, floatOverride:null, qcat:'Kafe', ov:'cal', cm:0, cday:null, rrep:'month', sm:0, who:null, mv:null, pm:0, ep:'month', xcat:'Kafe', split:null, pendingHouse:null, rp:'day', hp:'week', hreason:'Mik / familje', filter:'all', sel:null, table:null, cat:'Kafe', q:'', staff:CFG.staff[0], arrange:false, arrSel:null, admin:false, acat:'Kafe', pin:'',
+  view:'tables', counted:null, leftFloat:null, floatOverride:null, qcat:'Kafe', ov:'cal', cm:0, cday:null, rrep:'month', sm:0, who:null, mv:null, pm:0, ep:'month', xcat:'Kafe', split:null, pendingHouse:null, rp:'day', hp:'week', hreason:'Mik / familje', filter:'all', sel:null, table:null, cat:'Kafe', q:'', staff:CFG.staff[0], arrange:false, arrSel:null, pv:(()=>{ try{ return localStorage.getItem('xbar-pv')||'plan'; }catch(_){ return 'plan'; } })(), admin:false, acat:'Kafe', pin:'',
   orders:{
     t3:{opened:ago(22),status:'open',by:'Stafi',lines:[{id:'mm',q:2,s:2},{id:'uj',q:2,s:2},{id:'kr',q:1,s:1}]},
     t5:{opened:ago(48),status:'open',by:'Stafi',lines:[{id:'ka',q:1,s:1},{id:'il',q:1,s:1},{id:'ch',q:2,s:2}]},
@@ -1282,7 +1291,7 @@ function tablesView(){
   };
   const F=(k,l)=>`<button class="f" data-filter="${k}" aria-pressed="${S.filter===k}">${l}<em>${c[k]}</em></button>`;
   const list=TABLES.filter(t=>!t.take&&show(t.id));
-  const zones=`<div class="plan-wrap">${planView()}</div><div class="tlist">${list.length?`<div class="grid">${list.map(card).join('')}</div>`:''}</div>`;
+  const zones=`<div class="tv ${S.pv==='list'?'pv-list':''}"><div class="pvt"><button data-pv="plan" aria-pressed="${S.pv!=='list'}">Salla</button><button data-pv="list" aria-pressed="${S.pv==='list'}">Lista</button></div><div class="plan-wrap">${planView()}</div><div class="tlist">${list.length?`<div class="grid">${list.map(card).join('')}</div>`:''}</div></div>`;
   const accs=S.filter==='acct'?CFG.accounts:[];
   const accCard=a=>{ const o=S.orders[a.id], first=o&&o.rounds[0];
     return `<button class="acc ${o?'open':''} ${S.sel===a.id?'sel':''}" data-sel="${a.id}">
@@ -1290,7 +1299,7 @@ function tablesView(){
       ${o?`<span class="amt">${fmt(total(o))}</span><span class="meta">${o.rounds.length} porosi</span>`:`<span class="meta">Asgjë pa paguar</span>`}
     </button>`; };
   const accSec=accs.length?`<section class="zone"><h2>Klientët e rregullt</h2><div class="grid">${accs.map(accCard).join('')}</div></section>`:'';
-  if(S.arrange&&S.admin) return `<div class="th"><h1>Rregullo sallën</h1></div>${planView()}`;
+  if(S.arrange&&S.admin) return `<div class="th"><h1>Rregullo sallën</h1></div><div class="plan-wrap">${planView()}</div>`;
   return `<div class="split"><div>
       <div class="th"><h1>Tavolinat</h1>
         <div class="filters">${F('all','Të gjitha')}${F('open','Të zëna')}${F('free','Të lira')}<button class="f facc" data-filter="acct" aria-pressed="${S.filter==='acct'}">Klientët${openAcc?`<em>${openAcc}</em>`:''}</button></div>
@@ -2696,6 +2705,7 @@ document.addEventListener('click',e=>{
     if(MENU.filter(m=>m.c===M[id].c).length<=1){ toast('Kategoria duhet të ketë të paktën një artikull'); return; }
     const n=M[id].n; MENU.splice(MENU.findIndex(m=>m.id===id),1); delete M[id]; saveCfg(); render(); toast(`${n} u fshi`); return;
   }
+  if(d.pv){ S.pv=d.pv; try{ localStorage.setItem('xbar-pv',d.pv); }catch(_){} render(); return; }
   if(d.tadd){ planCount(d.tadd,Number(d.dir)); return; }
   if(d.pseat){ const c=CFG.plan.tables.find(t=>t.k==='counter'); if(!c) return; const cur=c.seats||3, nv=cur+Number(d.pseat);
     if(nv<1||nv>12) return; if(nv<cur&&S.orders[c.id+'s'+cur]){ toast(`${tname(c.id+'s'+cur)} ka porosi të hapur`); return; }
