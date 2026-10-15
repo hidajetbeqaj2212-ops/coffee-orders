@@ -30,7 +30,7 @@ FONTS = ''.join(
 rep_re(r'<title>.*?</title>\s*<link rel="preconnect"[^>]*>\s*<link rel="preconnect"[^>]*>\s*<link rel="stylesheet"[^>]*>',
        '<!doctype html>\n<html lang="sq">\n<head>\n<meta charset="utf-8">\n'
        '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
-       '<title>Coffee Internal Orders</title>\n<meta name="theme-color" content="#1f5644">\n'
+       '<title>XBar</title>\n<meta name="theme-color" content="#121212">\n'
        '<link rel="manifest" href="/manifest.webmanifest">\n<link rel="icon" href="/icons/icon-192.png">\n'
        '<link rel="apple-touch-icon" href="/icons/icon-192.png">\n<meta name="apple-mobile-web-app-capable" content="yes">\n'
        f'<style>{FONTS}</style>')
@@ -42,7 +42,7 @@ EXTRA_CSS = """
 .sysg .box{display:flex; flex-direction:column; gap:12px}
 .sy-p{margin:0; color:var(--mute); font-weight:600; line-height:1.45}
 .sy-r{display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-top:1px solid var(--line); font-weight:600}
-.sy-r b{font-weight:800; text-align:right} .sy-r b.ok{color:var(--green)} .sy-r b.warn{color:#985319}
+.sy-r b{font-weight:800; text-align:right} .sy-r b.ok{color:var(--green)} .sy-r b.warn{color:#c2410c}
 .sy-addr{padding:14px 16px; border-radius:12px; background:var(--blue-soft); color:var(--blue-2); font-weight:800; font-size:18px; word-break:break-all}
 .sy-addr small{display:block; font-size:14px; font-weight:600; color:var(--ink-2); margin-top:4px}
 .pinf{display:grid; grid-template-columns:1fr 1fr auto; gap:10px}

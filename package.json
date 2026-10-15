@@ -1,7 +1,7 @@
 {
   "name": "coffee-orders",
-  "version": "1.0.0",
-  "description": "Sistemi i porosive të brendshme për kafiterinë",
+  "version": "1.1.0",
+  "description": "XBar — sistemi i porosive",
   "main": "electron/main.js",
   "scripts": {
     "start": "electron .",
@@ -10,7 +10,7 @@
     "dist": "electron-builder --win --x64",
     "release": "electron-builder --win --x64 --publish always"
   },
-  "author": "Coffee Internal Orders",
+  "author": "XBar",
   "license": "MIT",
   "dependencies": {
     "better-sqlite3": "^11.10.0",
@@ -20,11 +20,11 @@
     "electron": "^33.4.11",
     "electron-builder": "^25.1.8"
   },
-  "productName": "Coffee Internal Orders",
+  "productName": "XBar",
   "build": {
     "appId": "com.coffeeorders.internal",
-    "productName": "Coffee Internal Orders",
-    "artifactName": "Coffee-Internal-Orders-Setup-${version}.${ext}",
+    "productName": "XBar",
+    "artifactName": "XBar-Setup-${version}.${ext}",
     "directories": {
       "output": "dist",
       "buildResources": "build"
@@ -52,7 +52,7 @@
       "perMachine": false,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Coffee Internal Orders",
+      "shortcutName": "XBar",
       "runAfterFinish": true
     },
     "publish": [
@@ -63,7 +63,7 @@
         "releaseType": "release"
       }
     ],
-    "copyright": "Copyright © 2026 Coffee Internal Orders"
+    "copyright": "Copyright © 2026 XBar"
   },
   "repository": {
     "type": "git",

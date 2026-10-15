@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Coffee Internal Orders · Hyrja</title>
-<meta name="theme-color" content="#1f5644">
+<title>XBar · Hyrja</title>
+<meta name="theme-color" content="#121212">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/icons/icon-192.png">
 <link rel="apple-touch-icon" href="/icons/icon-192.png">
@@ -12,20 +12,20 @@
 <style>
 @font-face{font-family:'Plus Jakarta Sans';font-weight:700;src:url(/fonts/plus-jakarta-sans-latin-700-normal.woff2) format('woff2')}
 @font-face{font-family:'Plus Jakarta Sans';font-weight:800;src:url(/fonts/plus-jakarta-sans-latin-800-normal.woff2) format('woff2')}
-:root{--blue:#1f5644;--ink:#1d1a16;--mute:#7a7066;--bg:#f1ede6;--red:#c94a3c}
+:root{--blue:#ff5a1f;--ink:#121212;--mute:#6f7176;--bg:#f2f2f0;--red:#e23b3b}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif}
 main{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px calc(24px + env(safe-area-inset-bottom))}
-.card{width:100%;max-width:360px;background:#fffdf9;border-radius:24px;padding:28px 24px;box-shadow:0 10px 40px rgba(45,32,20,.08);text-align:center}
-h1{font-weight:800;font-size:28px;margin:0 0 6px;letter-spacing:-.03em;line-height:1.1}
+.card{width:100%;max-width:360px;background:#fff;border-radius:24px;padding:28px 24px;box-shadow:0 10px 40px rgba(0,0,0,.08);text-align:center}
+h1{margin:0 0 14px;line-height:0} h1 img{height:40px;width:auto}
 p{margin:0 0 22px;color:var(--mute);font-weight:700}
 .dots{display:flex;justify-content:center;gap:14px;margin-bottom:20px}
-.dots i{width:16px;height:16px;border-radius:50%;background:#e7e0d5;transition:background .15s}
+.dots i{width:16px;height:16px;border-radius:50%;background:#e3e3e0;transition:background .15s}
 .dots i.on{background:var(--blue)}
 .dots.err i{background:var(--red)}
 .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.pad button{height:64px;border:0;border-radius:16px;background:#f2ece3;font:800 24px 'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);cursor:pointer}
-.pad button:active{background:#e7e0d5}
+.pad button{height:64px;border:0;border-radius:16px;background:#ededeb;font:800 24px 'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);cursor:pointer}
+.pad button:active{background:#e3e3e0}
 .pad span{display:block}
 .msg{min-height:24px;margin-top:16px;color:var(--red);font-weight:700}
 </style>
@@ -33,7 +33,7 @@ p{margin:0 0 22px;color:var(--mute);font-weight:700}
 <body>
 <main>
   <div class="card">
-    <h1>Coffee Internal Orders</h1>
+    <h1><img src="/icons/wordmark.png" alt="XBar" height="40"></h1>
     <p>Shkruaj PIN-in e pronarit</p>
     <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
     <div class="pad" id="pad"></div>

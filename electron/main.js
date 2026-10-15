@@ -20,7 +20,7 @@ const userData = () => app.getPath('userData');
 const backupDir = () => path.join(userData(), 'backups');
 function oneDriveDir() {
   const od = process.env.OneDriveConsumer || process.env.OneDrive || process.env.OneDriveCommercial;
-  return od && fs.existsSync(od) ? path.join(od, 'Coffee Orders Backups') : null;
+  return od && fs.existsSync(od) ? path.join(od, 'XBar Backups') : null;
 }
 function stamp(d = new Date()) {
   const p = n => String(n).padStart(2, '0');
@@ -148,7 +148,7 @@ async function printers() {
 /* ---------- Windows firewall: let the owner's phone reach the app over Tailscale ---------- */
 function ensureFirewallRule() {
   if (process.platform !== 'win32' || !app.isPackaged) return;
-  const rule = 'Coffee Internal Orders';
+  const rule = 'XBar';
   execFile('netsh', ['advfirewall', 'firewall', 'show', 'rule', `name=${rule}`], (err) => {
     if (!err) return; // rule exists
     const args = `advfirewall firewall add rule name="${rule}" dir=in action=allow protocol=TCP localport=${PORT} profile=any`;
@@ -182,7 +182,7 @@ function createWindow() {
     width: 1280, height: 800, minWidth: 900, minHeight: 600, show: false, backgroundColor: '#f4f5f7',
     // Starts locked full-screen (kiosk) so staff only see the POS. Ctrl+Shift+Q or F11 toggles it.
     kiosk: app.isPackaged,
-    title: "Coffee Internal Orders", icon: path.join(__dirname, '..', 'build', 'icon.png'), autoHideMenuBar: true,
+    title: "XBar", icon: path.join(__dirname, '..', 'build', 'icon.png'), autoHideMenuBar: true,
     webPreferences: { contextIsolation: true, sandbox: true },
   });
   Menu.setApplicationMenu(null);
@@ -231,7 +231,7 @@ app.whenReady().then(async () => {
       },
     });
   } catch (e) {
-    dialog.showErrorBox("Coffee Internal Orders", e.code === 'EADDRINUSE'
+    dialog.showErrorBox("XBar", e.code === 'EADDRINUSE'
       ? `Porti ${PORT} është i zënë. Ndoshta aplikacioni është tashmë i hapur.`
       : `Aplikacioni nuk u nis: ${e.message}`);
     app.exit(1);
