@@ -1058,6 +1058,7 @@ button.ft:active{transform:scale(.98)}
   .room.portrait .ft.k-sofa .plab b{color:var(--ink)}
   .room.portrait .mtag i{display:none}
   .room.portrait .rdots{display:none}
+  .room.portrait .seat.front .sp{display:none}
   .tv.pv-list .plan-wrap{display:none} .tv.pv-list .tlist{display:block}
   .pvt{display:grid; grid-template-columns:1fr 1fr; gap:4px; padding:4px; border-radius:14px; background:var(--soft); margin-bottom:14px}
   .pvt button{height:44px; border-radius:11px; font-weight:800; color:var(--ink-2)}
@@ -1136,23 +1137,30 @@ const PLAN_KINDS={
   sq4:{w:196,h:196,s:4,l:'Katrore · 4 karrige'}, sq2:{w:184,h:104,s:2,l:'Katrore · 2 karrige'},
   round:{w:200,h:200,s:4,l:'E rrumbullakët'}, rect:{w:264,h:188,s:6,l:'E gjatë · 6 karrige'},
   high:{w:164,h:164,s:4,l:'E lartë · 4 stola'}, stand:{w:146,h:146,s:3,l:'Në këmbë · 3 stola'},
-  sofa:{w:330,h:190,s:6,l:'Divanë · 6 vende'}, counter:{w:232,h:236,s:6,l:'Banaku'}, darts:{w:250,h:100,s:4,l:'Kënd i lojës'},
+  sofa:{w:370,h:218,s:6,l:'Divanë · 6 vende'}, counter:{w:232,h:236,s:6,l:'Banaku'}, darts:{w:280,h:122,s:4,l:'Kënd i lojës'},
   col:{w:48,h:48,l:''}, wall:{w:6,h:180,l:''}, door:{w:104,h:104,l:'Hyrja'}};
 /* where the label and the money tag sit on each piece: local centre x, y and half width/height of the top */
 const PLAN_TOP={sq4:(w,h)=>[w/2,h/2,60,60], sq2:(w,h)=>[w/2,h/2,48,48], round:(w,h)=>[w/2,h/2,58,58], rect:(w,h)=>[w/2,h/2,90,52],
-  high:(w,h)=>[w/2,h/2,40,40], stand:(w,h)=>[w/2,h/2,36,36], sofa:(w,h)=>[w/2,62+(h-62)/2,62,33], darts:(w,h)=>[(54+w-62)/2,27,70,28]};
+  high:(w,h)=>[w/2,h/2,40,40], stand:(w,h)=>[w/2,h/2,36,36], sofa:(w,h)=>[w/2,62+(h-62)/2,72,38], darts:(w,h)=>[(54+w-62)/2,27,70,28]};
 const TABLE_SHAPES=['sq4','sq2','round','rect','high','stand'];
 const PLAN_GROUP=k=>k==='sofa'||k==='counter'||k==='darts'?k:'t';
 /* Default room from the owner's floor plan (WC left out): 6 tables, entrance on the left wall,
    the bar counter pushed up into the top-right corner (people sit and order there, every stool is its own tab),
    darts below it, and the separe in the bottom-right nook behind a short partition wall. */
-const DEF_PLAN={h:728,
-  tables:[{id:'t1',no:1,k:'sq4',x:132,y:112,r:0},{id:'t2',no:2,k:'sq4',x:409,y:172,r:0},{id:'t3',no:3,k:'sq4',x:256,y:372,r:0},
-          {id:'t4',no:4,k:'sq4',x:548,y:402,r:0},{id:'t5',no:5,k:'sq4',x:110,y:590,r:0},{id:'t6',no:6,k:'sq4',x:400,y:610,r:0},
-          {id:'t7',no:1,k:'sofa',x:825,y:625,r:0},{id:'t8',no:1,k:'counter',x:884,y:186,r:0,seats:6},{id:'t9',no:1,k:'darts',x:865,y:446,r:0}],
-  fixtures:[{id:'door',k:'door',x:56,y:300,r:90}]};
+const PLAN_V=3;
+const DEF_PLAN={v:PLAN_V, h:870,
+  tables:[{id:'t1',no:1,k:'sq4',x:132,y:115,r:0},{id:'t2',no:2,k:'sq4',x:405,y:185,r:0},{id:'t3',no:3,k:'sq4',x:250,y:420,r:0},
+          {id:'t4',no:4,k:'sq4',x:540,y:455,r:0},{id:'t5',no:5,k:'sq4',x:115,y:700,r:0},{id:'t6',no:6,k:'sq4',x:400,y:730,r:0},
+          {id:'t7',no:1,k:'sofa',x:812,y:761,r:0},{id:'t8',no:1,k:'counter',x:884,y:221,r:0,seats:6},{id:'t9',no:1,k:'darts',x:852,y:560,r:0}],
+  fixtures:[{id:'door',k:'door',x:56,y:345,r:90}]};
 const CFG={plan:JSON.parse(JSON.stringify(DEF_PLAN)), staff:['Stafi'], salary:{Stafi:0},
   accounts:[]};
+/* a saved room the owner never rearranged follows the newest default layout (keeping the stool count) */
+function adoptPlan(p){
+  if(!p||!Array.isArray(p.tables)||!p.tables.length) return;
+  if((p.v||0)<PLAN_V&&!p.edited){ const np=JSON.parse(JSON.stringify(DEF_PLAN)), c=p.tables.find(t=>t.k==='counter'), nc=np.tables.find(t=>t.k==='counter'); if(c&&nc&&c.seats) nc.seats=c.seats; CFG.plan=np; return; }
+  CFG.plan=p;
+}
 const TABLES=[], T={};
 function buildTables(){
   TABLES.length=0; Object.keys(T).forEach(k=>delete T[k]);
@@ -1174,7 +1182,7 @@ function saveCfg(){ try{ localStorage.setItem(STORE, JSON.stringify({menu:MENU.m
   try{
     const d=JSON.parse(localStorage.getItem(STORE)||'null'); if(!d) return;
     if(Array.isArray(d.menu)&&d.menu.length){ MENU.length=0; d.menu.forEach(m=>MENU.push({...m, a:DEF_ART[m.id]||catArt(m.c)})); Object.keys(M).forEach(k=>delete M[k]); MENU.forEach(m=>M[m.id]=m); }
-    if(d.plan&&Array.isArray(d.plan.tables)&&d.plan.tables.length) CFG.plan=d.plan;
+    adoptPlan(d.plan);
     if(Array.isArray(d.staff)&&d.staff.length) CFG.staff=d.staff;
     if(d.salary&&typeof d.salary==='object') CFG.salary=d.salary;
     if(Array.isArray(d.accounts)) CFG.accounts=d.accounts;
@@ -1364,12 +1372,15 @@ function tablesView(){
 }
 /* ---- floor plan ---- */
 /* size of a piece in plan units; the bar counter gets taller with every stool so they all sit along its side */
-const kdim=it=>{ const K=PLAN_KINDS[it.k]||PLAN_KINDS.sq4; return it.k==='counter'?{w:K.w,h:Math.max(180,Math.min(10,Math.max(1,it.seats||6))*58+24)}:{w:K.w,h:K.h}; };
+const CTR_FRONT=44; /* room for the stools along the front of the bar */
+const ctrSplit=it=>{ const n=Math.max(1,Math.min(10,it.seats||6)), front=n>=3?Math.min(3,Math.floor(n/3)):0; return [n-front,front]; };
+const kdim=it=>{ const K=PLAN_KINDS[it.k]||PLAN_KINDS.sq4; if(it.k!=='counter') return {w:K.w,h:K.h}; const [side]=ctrSplit(it); return {w:K.w,h:Math.max(220,side*82+70)+CTR_FRONT}; };
 const pdim=it=>{ const K=kdim(it); return it.r%180?[K.h,K.w]:[K.w,K.h]; };
 /* Bar counter: L-shaped, closed behind (staff area enclosed by the back bar). Stools sit along the two outer sides. */
 function counterSeats(it){
-  const n=Math.max(1,Math.min(10,it.seats||6)), B=kdim(it).h, out=[];
-  for(let i=0;i<n;i++) out.push({lx:18, ly:12+(B-24)*(i+0.5)/n, nx:-1, ny:0});
+  const K=kdim(it), B=K.h-CTR_FRONT, [side,front]=ctrSplit(it), out=[];
+  for(let i=0;i<side;i++) out.push({lx:18, ly:20+(B-40)*(i+0.5)/side, nx:-1, ny:0});
+  for(let i=0;i<front;i++) out.push({lx:44+(K.w-44)*(i+0.5)/front, ly:K.h-18, nx:0, ny:1});
   return out.map((p,i)=>({...p, i:i+1, id:it.id+'s'+(i+1)}));
 }
 function toPlan(it,lx,ly,nx,ny){ /* piece-local point/normal -> room coordinates */
@@ -1392,7 +1403,7 @@ function pieceSvg(it,bare){
   else if(it.k==='rect'){ const tw=180, th=104, ox=(w-tw)/2, oy=(h-th)/2; g=`${chairs(w/2-40,oy-20,0)}${chairs(w/2+40,oy-20,0)}${chairs(w/2-40,h-oy+20,180)}${chairs(w/2+40,h-oy+20,180)}${chairs(ox-20,h/2,-90)}${chairs(w-ox+20,h/2,90)}<rect class="tsh" x="${ox+3}" y="${oy+5}" width="${tw}" height="${th}" rx="12"/><rect class="tt" x="${ox}" y="${oy}" width="${tw}" height="${th}" rx="12"/>`; }
   else if(it.k==='sofa'){
     /* upholstered U lounge: a long sofa against the wall, two short returns, low table in the middle */
-    const bk=22, d=62, ct=[w/2-62,62+(h-62)/2-33,124,66];
+    const bk=22, d=62, ct=[w/2-72,62+(h-62)/2-38,144,76];
     const cush=(x,y,cw,chh)=>`<rect class="sf" x="${x}" y="${y}" width="${cw}" height="${chh}" rx="9"/>`;
     g=`<rect class="sfb" x="0" y="0" width="${w}" height="${d}" rx="14"/><rect class="sfb" x="0" y="0" width="${d}" height="${h}" rx="14"/><rect class="sfb" x="${w-d}" y="0" width="${d}" height="${h}" rx="14"/>`
       +[0,1,2].map(i=>cush(d+4+i*((w-2*d-8)/3),bk+2,(w-2*d-8)/3-4,d-bk-6)).join('')
@@ -1404,15 +1415,15 @@ function pieceSvg(it,bare){
     g = it.k==='high'
       ? [[cx,18],[cx,h-18],[18,cy],[w-18,cy]].map(([x,y])=>stool(x,y)).join('')+`<rect class="tsh" x="${cx-37}" y="${cy-35}" width="80" height="80" rx="10"/><rect class="tt" x="${cx-40}" y="${cy-40}" width="80" height="80" rx="10"/>`
       : [270,30,150].map(a=>{ const r=(a)*Math.PI/180; return stool(cx+Math.cos(r)*54,cy+Math.sin(r)*54); }).join('')+`<circle class="tsh" cx="${cx+3}" cy="${cy+5}" r="36"/><circle class="tt" cx="${cx}" cy="${cy}" r="36"/>`; }
-  else if(it.k==='counter'){ const t=56, L=44, B=h, r=14;
+  else if(it.k==='counter'){ const t=56, L=44, B=h-CTR_FRONT, r=14;
     g=`<path class="ctr" d="M ${L} 0 H ${w} V ${B} H ${L+r} Q ${L} ${B} ${L} ${B-r} Z"/>`
       +`<rect class="ctin" x="${L+t}" y="0" width="${w-L-t}" height="${B-t}"/>`
       +`<path class="led" d="M ${L+1.5} 0 V ${B-r} Q ${L+1.5} ${B-1.5} ${L+r} ${B-1.5} H ${w}"/>`
       +(bare?'':counterSeats(it).map(p=>`<circle class="stl" cx="${p.lx}" cy="${p.ly}" r="17"/>`).join('')); }
   else if(it.k==='darts'){ /* play zone with a dartboard icon on the right, centred */
-    const by=h/2, bx=w-28-30;
+    const by=h/2, bx=w-30-34;
     g=`<rect class="lane" x="1" y="1" width="${w-2}" height="${h-2}" rx="18"/>`
-      +`<circle class="db2" cx="${bx}" cy="${by}" r="30"/><circle class="db1" cx="${bx}" cy="${by}" r="24.5"/><circle class="db3" cx="${bx}" cy="${by}" r="18.5"/>`; }
+      +`<circle class="db2" cx="${bx}" cy="${by}" r="34"/><circle class="db1" cx="${bx}" cy="${by}" r="28"/><circle class="db3" cx="${bx}" cy="${by}" r="21"/>`; }
   else if(it.k==='wall'){ g=`<rect class="pwall" x="0" y="0" width="${w}" height="${h}" rx="3"/>`; }
   else if(it.k==='col'){ g=`<rect class="colm" x="0" y="0" width="${w}" height="${h}" rx="4"/><rect class="colt" x="7" y="7" width="${w-14}" height="${h-14}" rx="2"/>`; }
   else if(it.k==='door'){ g=`<rect class="drw" x="0" y="${h-8}" width="${w}" height="8" rx="3"/><path class="dr" d="M ${w} ${h-8} A ${w} ${w} 0 0 0 0 ${h-8-w}"/><line x1="0" y1="${h-8}" x2="0" y2="${h-8-w}" stroke="#d2d8df" stroke-width="3" stroke-linecap="round"/>`; }
@@ -1439,9 +1450,9 @@ function planView(){
     const t=it.k==='counter'?{n:'Banaku'}:T[it.id]; if(!t) return '';
     if(A) return `<div class="ft k-${it.k} free ${S.arrSel===it.id?'on':''}" data-ft="${it.id}" style="${pos(it)}">${pieceSvg(it)}<span class="fc"><span class="fn ${it.k==='sofa'||it.k==='counter'?'sep':''}">${esc(t.n)}</span><span class="fm">${it.k==='counter'?(it.seats||6)+' stola':PLAN_KINDS[it.k].l}</span></span>${tools(it)}</div>`;
     if(it.k==='counter'){ const seats=counterSeats(it), busy=seats.filter(p=>S.orders[p.id]).length;
-      return `<div class="ft k-counter fxc" style="${pos(it)}">${pieceSvg(it,true)}<span class="clab" style="${(()=>{ const K=kdim(it), q=toPlan(it,(100+K.w)/2,(K.h-56)/2,0,0); return `left:calc(50% + ${Math.round(q.x-it.x)} * var(--u));top:calc(50% + ${Math.round(q.y-it.y)} * var(--u))`; })()}"><b>${esc(T[it.id+'s1']?T[it.id+'s1'].nm.split(' · ')[0]:'Banaku')}</b><small>${busy?`<em>${busy}</em> / ${seats.length} të zënë`:`${seats.length} stola`}</small></span></div>`+seats.map(p=>{
+      return `<div class="ft k-counter fxc" style="${pos(it)}">${pieceSvg(it,true)}<span class="clab" style="${(()=>{ const K=kdim(it), q=toPlan(it,(100+K.w)/2,(K.h-CTR_FRONT-56)/2,0,0); return `left:calc(50% + ${Math.round(q.x-it.x)} * var(--u));top:calc(50% + ${Math.round(q.y-it.y)} * var(--u))`; })()}"><b>${esc(T[it.id+'s1']?T[it.id+'s1'].nm.split(' · ')[0]:'Banaku')}</b><small>${busy?`<em>${busy}</em> / ${seats.length} të zënë`:`${seats.length} stola`}</small></span></div>`+seats.map(p=>{
         const q=toPlan(it,p.lx,p.ly,p.nx,p.ny), o=S.orders[p.id], st=status(p.id);
-        return `<button class="seat ${st} ${S.sel===p.id?'sel':''} ${show(p.id)?'':'dim'}" data-sel="${p.id}" style="--x:${Math.round(q.x)};--y:${Math.round(q.y)};--nx:${q.nx};--ny:${q.ny}" aria-label="${esc(tname(p.id))} · ${LBL[st]}${o?' · '+fmt(total(o)):''}">${p.i}${o?`<span class="sp">${fmt(total(o))}</span>`:''}</button>`; }).join('');
+        return `<button class="seat ${st} ${p.ny?'front':''} ${S.sel===p.id?'sel':''} ${show(p.id)?'':'dim'}" data-sel="${p.id}" style="--x:${Math.round(q.x)};--y:${Math.round(q.y)};--nx:${q.nx};--ny:${q.ny}" aria-label="${esc(tname(p.id))} · ${LBL[st]}${o?' · '+fmt(total(o)):''}">${p.i}${o?`<span class="sp">${fmt(total(o))}</span>`:''}</button>`; }).join('');
     }
     const o=S.orders[it.id], st=status(it.id), nr=o?savedRounds(o):0;
     const lab=it.k==='sofa'||it.k==='darts'?`<b class="nm">${esc(t.n)}</b>`:`<b>${esc(t.n)}</b>`;
@@ -1475,7 +1486,7 @@ document.addEventListener('pointermove',e=>{
   d.it.y=Math.min(H-bh/2,Math.max(bh/2,snap(d.oy+dy)));
   d.el.style.setProperty('--x',d.it.x); d.el.style.setProperty('--y',d.it.y);
 });
-const pdrop=()=>{ const d=PDRAG; if(!d) return; PDRAG=null; if(d.moved) saveCfg(); else S.arrSel=S.arrSel===d.it.id?null:d.it.id; render(); };
+const pdrop=()=>{ const d=PDRAG; if(!d) return; PDRAG=null; if(d.moved){ CFG.plan.edited=true; saveCfg(); } else S.arrSel=S.arrSel===d.it.id?null:d.it.id; render(); };
 document.addEventListener('pointerup',pdrop); document.addEventListener('pointercancel',pdrop);
 function planFit(it){ const [bw,bh]=pdim(it), H=CFG.plan.h||620; it.x=Math.min(1000-bw/2,Math.max(bw/2,it.x)); it.y=Math.min(H-bh/2,Math.max(bh/2,it.y)); }
 function planFree(k){ /* first spot where a new piece doesn't overlap anything */
@@ -1486,6 +1497,7 @@ function planFree(k){ /* first spot where a new piece doesn't overlap anything *
   return [500,Math.round(H/2)];
 }
 function planCount(kind,dir){
+  CFG.plan.edited=true;
   const pl=CFG.plan.tables, sofa=kind==='sofa', ctr=kind==='counter', dt=kind==='darts', mine=pl.filter(t=>PLAN_GROUP(t.k)===kind);
   if(dir>0){
     if(mine.length>=(sofa?3:ctr||dt?2:40)) return;
@@ -2793,10 +2805,10 @@ document.addEventListener('click',e=>{
     saveCfg(); render(); return; }
   if(d.act==='arrange'){ S.arrange=true; S.arrSel=null; S.sel=null; S.filter='all'; S.view='tables'; render(); scrollTo(0,0); return; }
   if(d.act==='arrdone'){ S.arrange=false; S.arrSel=null; saveCfg(); render(); toast('Salla u ruajt'); return; }
-  if(d.act==='prot'){ const it=planItem(d.id); if(it){ it.r=((it.r||0)+90)%360; planFit(it); saveCfg(); render(); } return; }
-  if(d.act==='pflip'){ const it=planItem(d.id); if(it){ it.m=!it.m; saveCfg(); render(); } return; }
-  if(d.act==='pshape'){ const it=planItem(d.id); if(it){ it.k=TABLE_SHAPES[(TABLE_SHAPES.indexOf(it.k)+1)%TABLE_SHAPES.length]; planFit(it); buildTables(); saveCfg(); render(); } return; }
-  if(d.act==='proomh'){ const H=Math.min(1200,Math.max(400,(CFG.plan.h||620)+Number(d.dir))); if(planItems().some(o=>o.y+pdim(o)[1]/2>H-8)){ toast('Lëviz fillimisht tavolinat që janë poshtë'); return; } CFG.plan.h=H; saveCfg(); render(); return; }
+  if(d.act==='prot'){ const it=planItem(d.id); if(it){ CFG.plan.edited=true; it.r=((it.r||0)+90)%360; planFit(it); saveCfg(); render(); } return; }
+  if(d.act==='pflip'){ const it=planItem(d.id); if(it){ CFG.plan.edited=true; it.m=!it.m; saveCfg(); render(); } return; }
+  if(d.act==='pshape'){ const it=planItem(d.id); if(it){ CFG.plan.edited=true; it.k=TABLE_SHAPES[(TABLE_SHAPES.indexOf(it.k)+1)%TABLE_SHAPES.length]; planFit(it); buildTables(); saveCfg(); render(); } return; }
+  if(d.act==='proomh'){ const H=Math.min(1200,Math.max(400,(CFG.plan.h||620)+Number(d.dir))); if(planItems().some(o=>o.y+pdim(o)[1]/2>H-8)){ toast('Lëviz fillimisht tavolinat që janë poshtë'); return; } CFG.plan.h=H; CFG.plan.edited=true; saveCfg(); render(); return; }
   if(d.delstaff){ if(CFG.staff.length<=1) return; CFG.staff=CFG.staff.filter(n=>n!==d.delstaff); if(!CFG.staff.includes(S.staff)) S.staff=CFG.staff[0]; saveCfg(); render(); toast(`${d.delstaff} u hoq`); return; }
   if(d.sel){ if(!S.orders[d.sel]){ S.view='order'; S.table=d.sel; S.sel=null; S.q=''; render(); scrollTo(0,0); return; } S.sel=S.sel===d.sel?null:d.sel; render(); return; }
   if(d.open){ S.who=null; S.view='order'; S.table=d.open; S.sel=isTable(d.open)||isAcct(d.open)?d.open:null; S.q=''; render(); scrollTo(0,0); return; }

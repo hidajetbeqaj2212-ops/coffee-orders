@@ -69,7 +69,7 @@ function saveCfg(){ schedulePersist(); }
 function applyCfg(d){
   if(!d) return;
   if(Array.isArray(d.menu)&&d.menu.length){ MENU.length=0; d.menu.forEach(m=>MENU.push({...m, a:DEF_ART[m.id]||catArt(m.c)})); Object.keys(M).forEach(k=>delete M[k]); MENU.forEach(m=>M[m.id]=m); }
-  if(d.plan&&Array.isArray(d.plan.tables)&&d.plan.tables.length) CFG.plan=d.plan;
+  adoptPlan(d.plan);
   if(Array.isArray(d.staff)&&d.staff.length) CFG.staff=d.staff;
   if(d.salary&&typeof d.salary==='object') CFG.salary=d.salary;
   if(Array.isArray(d.accounts)) CFG.accounts=d.accounts;
