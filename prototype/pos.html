@@ -797,6 +797,8 @@ select.ai{appearance:auto}
 .ski-r.on{background:var(--blue-soft); border-radius:12px}
 .ski-r .tb{width:48px; height:48px; border-radius:10px; background:var(--soft); display:grid; place-items:center} .ski-r .tb svg{width:36px; height:36px}
 .ski-n b{display:block; font-size:16px} .ski-n small{color:var(--mute); font-weight:600; font-size:13px}
+.skq-in{width:58px; height:40px; border:0; border-radius:9px; background:var(--card); text-align:center; font:800 17px var(--font); color:var(--ink); padding:0 4px}
+.skq-in:focus-visible{outline:3px solid var(--busy); outline-offset:1px}
 .ski-24{height:44px; padding:0 14px; border-radius:10px; background:var(--card); box-shadow:0 1px 2px rgba(17,24,39,.08); font-weight:800; color:var(--blue-2)}
 .skchk{display:flex; align-items:center; gap:10px; font-weight:700; color:var(--ink-2); white-space:nowrap}
 .skchk input{width:22px; height:22px; accent-color:var(--blue)}
@@ -2359,20 +2361,30 @@ function stockEditView(L){
         <span class="ske-m">${m.cost?`<b>${fmt(m.p-m.cost)}</b><small>${Math.round((m.p-m.cost)/m.p*100)}%</small>`:'—'}</span></div>`).join('')}
     </section>`;
 }
-function inModal(pre){
+function inModal(pre,keep){
+  const scl=keep?document.querySelector('.ski'):null, ss=scl?scl.scrollTop:0, sh=keep&&document.querySelector('.sheet')?document.querySelector('.sheet').scrollTop:0;
   if(pre) S.skIn={...(S.skIn||{}),[pre]:(S.skIn&&S.skIn[pre])||0};
   const L=stockLevels(), sel=S.skIn||{}, cat=S.skInCat||STOCK_CATS.find(c=>tracked().some(m=>m.c===c))||'Pije';
   const items=tracked().filter(m=>m.c===cat), tot=sum(Object.values(sel),q=>q||0);
   modal(`<div class="sp-h"><h3>Pranim malli</h3><button class="x" data-close aria-label="Mbyll">${I.x}</button></div><p class="mp">Çka solli furnitori? Shto sasinë për çdo artikull.</p>
     <div class="filters">${STOCK_CATS.filter(c=>tracked().some(m=>m.c===c)).map(c=>`<button class="f" data-skincat="${c}" aria-pressed="${cat===c}">${c}${sum(tracked().filter(m=>m.c===c),m=>sel[m.id]||0)?`<em>${sum(tracked().filter(m=>m.c===c),m=>sel[m.id]||0)}</em>`:''}</button>`).join('')}</div>
     <div class="ski">${items.map(m=>{ const q=sel[m.id]||0; return `<div class="ski-r ${q?'on':''}"><span class="tb">${m.a()}</span><span class="ski-n"><b>${esc(m.n)}</b><small>në stok ${L[m.id].q}</small></span>
-      <span class="step"><button data-skq="${m.id}" data-d="-1" aria-label="Një më pak">${I.minus}</button><b>${q}</b><button data-skq="${m.id}" data-d="1" aria-label="Një më shumë">${I.plus}</button></span>
+      <span class="step"><button data-skq="${m.id}" data-d="-1" aria-label="Një më pak">${I.minus}</button><input class="skq-in" id="skq-${m.id}" data-skqi="${m.id}" inputmode="numeric" autocomplete="off" value="${q||''}" placeholder="0" aria-label="Sasia për ${esc(m.n)}"><button data-skq="${m.id}" data-d="1" aria-label="Një më shumë">${I.plus}</button></span>
       <button class="ski-24" data-skq="${m.id}" data-d="24">+24</button></div>`; }).join('')}</div>
     <div class="ski-pay"><label class="ap"><input class="ai" id="ski-paid" inputmode="decimal" placeholder="Sa u pagua? (opsionale)" value="${S.skPaid||''}"><span>€</span></label>
       ${paySrc('sksrc',S.sksrc||'arka')}</div>
     <p class="qhint">Nëse nuk u pagua tani, lëre shumën bosh.</p>
     <div class="btns"><button class="btn out" data-close>Anulo</button><button class="btn pri" data-skact="inok" ${tot?'':'disabled'}>${I.ok}Ruaj · ${tot} copë</button></div>`,'wide');
+  if(keep){ const n=document.querySelector('.ski'), sht=document.querySelector('.sheet'); if(n) n.scrollTop=ss; if(sht) sht.scrollTop=sh; }
 }
+/* typing a quantity: update in place so the keyboard and the list stay where they are */
+document.addEventListener('input',e=>{
+  const id=e.target.dataset&&e.target.dataset.skqi; if(!id) return;
+  const v=Math.max(0,Math.min(9999,parseInt(String(e.target.value).replace(/\D/g,''),10)||0)), s=S.skIn||(S.skIn={});
+  s[id]=v; e.target.closest('.ski-r').classList.toggle('on',v>0);
+  const tot=sum(Object.values(s),q=>q||0), b=document.querySelector('[data-skact="inok"]');
+  if(b){ b.disabled=!tot; b.innerHTML=`${I.ok}Ruaj · ${tot} copë`; }
+});
 document.addEventListener('click',e=>{
   const b=e.target.closest('[data-skact],[data-skf],[data-skc],[data-skin],[data-skincat],[data-skq],[data-skdel]'); if(!b) return;
   const d=b.dataset, own=()=>{ if(S.admin) return true; toast('Vetëm pronari · hap Zyrën me PIN'); return false; };
@@ -2380,7 +2392,7 @@ document.addEventListener('click',e=>{
   if(d.skc!==undefined){ S.skc=d.skc; render(); return; }
   if(d.skin){ S.skIn={}; S.skInCat=M[d.skin].c; S.skPaid=''; S.sksrc='arka'; inModal(d.skin); return; }
   if(d.skincat){ keepIn(); S.skInCat=d.skincat; inModal(); return; }
-  if(d.skq){ keepIn(); const s=S.skIn||(S.skIn={}); s[d.skq]=Math.max(0,(s[d.skq]||0)+Number(d.d)); inModal(); return; }
+  if(d.skq){ keepIn(); const s=S.skIn||(S.skIn={}); s[d.skq]=Math.max(0,(s[d.skq]||0)+Number(d.d)); inModal(null,true); return; }
   if(d.skdel){ if(!own()) return; const mv=S.stock.find(m=>m.id===d.skdel); if(mv&&mv.exp){ S.exp=S.exp.filter(e=>e.id!==mv.exp); saveExp(); } S.stock=S.stock.filter(m=>m.id!==d.skdel); saveStock(); render(); toast('Pranimi u fshi'); return; }
   const a=d.skact;
   if(a==='list'){ S.skMode='list'; S.skCnt=null; render(); scrollTo(0,0); return; }

@@ -12,7 +12,7 @@ Receipts are order slips ("POROSI", marked *Nuk është kupon fiskal*), not fisc
 - **Every screen stays live.** A change on the bar shows up on the owner's phone within a second, and the other way round.
 - **The floor plan.** *Tavolinat* shows the room from above: 6 tables, 1 separe (a sofa lounge around a low table, counted as one table), the Pikado (darts) corner and the bar counter. People sit and order at the bar, so every bar stool is its own tab (*Banaku · 1*, *Banaku · 2*, …). Each table and stool shows whether it's free or busy and the running total; tables also show how long they've been open. Tap one to see or take the order.
 - **Receipts print without a driver.** The receipt is rendered as an image and sent straight to the 80 mm thermal printer as ESC/POS, over the network (printer IP, port 9100) or USB. Set it in *Zyra → Sistemi*.
-- **Backups** run every night and after every day close. Each one goes to `%APPDATA%\XBar\backups`, plus a copy in `OneDrive\XBar Backups` when OneDrive is signed in. The last 90 are kept.
+- **Backups** run every night and after every day close. Each one goes to `%APPDATA%\XBar\backups`, plus a copy in Google Drive (`My Drive\XBar Backups`) when Google Drive for desktop is signed in with the café's Gmail. Backups older than 30 days are deleted automatically, on the PC and in Google Drive.
 - **Updates.** The app checks this repo's GitHub Releases, downloads new versions in the background and installs them the next time it restarts.
 - **Remote access.** Any device that isn't the bar PC must log in with the owner PIN, and is only reachable over Tailscale or the café's Wi-Fi. Printing and backups can only be started from the bar PC.
 
@@ -27,7 +27,7 @@ Receipts are order slips ("POROSI", marked *Nuk është kupon fiskal*), not fisc
    - Change the owner PIN.
 5. **Set up the room.** In *Zyra → Menaxhimi → Salla*, set how many tables, separe, bar stools and pillars there are, then press *Rregullo sallën* and drag each piece to where it sits in the room. Tap a piece to rotate it, change a table's shape, or mirror the bar counter. The entrance can be moved too.
 6. **Menu and staff.** In *Zyra → Menaxhimi*, check the menu and prices, staff and regular clients. There is one staff profile to start with; add more under *Stafi* whenever needed. Salaries go in *Zyra → Pagat*.
-7. **Turn on OneDrive.** Sign in to OneDrive with the owner's Microsoft account (free, 5 GB). *Sistemi → Backup* should then show *OneDrive: Po*.
+7. **Turn on Google Drive.** Install *Google Drive for desktop* and sign in with the café's Gmail. *Sistemi → Backup* should then show *Google Drive: Po*. If it doesn't find the folder by itself, press *Zgjidh dosjen e Google Drive…* and pick *My Drive*.
 8. **Set up Tailscale** (free):
    - Install Tailscale on the bar PC and sign in with the owner's account (Google login works).
    - Set Tailscale to start with Windows. It does this by default.
@@ -54,11 +54,11 @@ GitHub Actions sees the new version, builds the installer and publishes the rele
 
 ## Restoring data
 
-Use *Zyra → Sistemi → Rikthe të dhënat nga një backup…* and pick a `.db` file, from the backups folder or from OneDrive. The current data is backed up first, then the app restarts with the restored data.
+Use *Zyra → Sistemi → Rikthe të dhënat nga një backup…* and pick a `.db` file, from the backups folder or from Google Drive. The current data is backed up first, then the app restarts with the restored data.
 
 On a brand-new PC:
 1. Install the app.
-2. Restore the newest file from `OneDrive\XBar Backups`.
+2. Restore the newest file from `My Drive\XBar Backups` in Google Drive.
 
 ## Development
 

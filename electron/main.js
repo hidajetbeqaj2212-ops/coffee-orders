@@ -18,34 +18,67 @@ app.on('second-instance', () => { if (win) { if (win.isMinimized()) win.restore(
 
 const userData = () => app.getPath('userData');
 const backupDir = () => path.join(userData(), 'backups');
-function oneDriveDir() {
-  const od = process.env.OneDriveConsumer || process.env.OneDrive || process.env.OneDriveCommercial;
-  return od && fs.existsSync(od) ? path.join(od, 'XBar Backups') : null;
+/* ---------- where the cloud copy goes ----------
+   1. a folder picked in Sistemi (saved as meta 'cloudDir')
+   2. Google Drive for desktop, signed in with the café's Gmail (its "My Drive" folder)
+   3. OneDrive, if that is what the PC uses */
+const isDir = p => { try { return fs.statSync(p).isDirectory(); } catch (e) { return false; } };
+function googleDriveRoot() {
+  const home = os.homedir(), cands = [];
+  for (const L of 'GHIJKLMNOPQRSTUVWXYZDEF') {
+    const root = `${L}:\\`;
+    if (!isDir(root)) continue;
+    if (isDir(path.join(root, 'My Drive'))) cands.push(path.join(root, 'My Drive'));
+    else if (isDir(path.join(root, '.shortcut-targets-by-id'))) { // Google Drive in another language: the one folder that isn't special
+      try { const d = fs.readdirSync(root).filter(n => !n.startsWith('.') && !/^(Shared drives|Computers|\$)/i.test(n) && isDir(path.join(root, n))); if (d.length) cands.push(path.join(root, d[0])); } catch (e) { /* ignore */ }
+    }
+  }
+  cands.push(path.join(home, 'My Drive'), path.join(home, 'Google Drive', 'My Drive'), path.join(home, 'Google Drive'));
+  return cands.find(isDir) || null;
 }
+function cloudTarget() {
+  const picked = srv && srv.db.meta('cloudDir', '');
+  if (picked && isDir(picked)) return { dir: path.join(picked, 'XBar Backups'), name: 'Dosja e zgjedhur', base: picked };
+  const g = googleDriveRoot();
+  if (g) return { dir: path.join(g, 'XBar Backups'), name: 'Google Drive', base: g };
+  const od = process.env.OneDriveConsumer || process.env.OneDrive || process.env.OneDriveCommercial;
+  if (od && isDir(od)) return { dir: path.join(od, 'XBar Backups'), name: 'OneDrive', base: od };
+  return null;
+}
+const KEEP_DAYS = 31; // backups older than a month are deleted, on this PC and in the cloud
 function stamp(d = new Date()) {
   const p = n => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}`;
 }
-function prune(dir, keep) {
+function prune(dir) {
   try {
-    const files = fs.readdirSync(dir).filter(f => /^orders-.*\.db$/.test(f)).sort();
-    for (const f of files.slice(0, Math.max(0, files.length - keep))) fs.unlinkSync(path.join(dir, f));
+    const cut = Date.now() - KEEP_DAYS * 864e5;
+    for (const f of fs.readdirSync(dir)) {
+      const m = /^orders-(\d{4})-(\d\d)-(\d\d)_/.exec(f); if (!m || !/\.db$/.test(f)) continue;
+      if (new Date(+m[1], +m[2] - 1, +m[3]).getTime() < cut) fs.unlinkSync(path.join(dir, f));
+    }
   } catch (e) { /* folder may not exist yet */ }
 }
 
-/* ---------- backups: this PC + OneDrive ---------- */
+/* ---------- backups: this PC + Google Drive (last 31 days) ---------- */
 async function backup(db, reason) {
   const name = `orders-${stamp()}${reason === 'close' ? '-mbyllja' : ''}.db`;
   const local = path.join(backupDir(), name);
   await db.backupTo(local);
-  prune(backupDir(), 90);
-  let onedrive = null;
-  const od = oneDriveDir();
-  if (od) {
-    try { fs.mkdirSync(od, { recursive: true }); fs.copyFileSync(local, path.join(od, name)); prune(od, 90); onedrive = od; }
-    catch (e) { console.error('[backup] OneDrive copy failed', e); }
+  prune(backupDir());
+  let cloud = null, cloudName = null;
+  const t = cloudTarget();
+  if (t) {
+    try { fs.mkdirSync(t.dir, { recursive: true }); fs.copyFileSync(local, path.join(t.dir, name)); prune(t.dir); cloud = t.dir; cloudName = t.name; }
+    catch (e) { console.error('[backup] cloud copy failed', e); }
   }
-  return { file: local, onedrive };
+  return { file: local, cloud, cloudName };
+}
+async function pickCloud() {
+  const r = await dialog.showOpenDialog(win, { title: 'Zgjidh dosjen e Google Drive', properties: ['openDirectory'], defaultPath: (cloudTarget() || {}).base || os.homedir() });
+  if (r.canceled || !r.filePaths[0]) return { ok: false };
+  srv.db.setMeta('cloudDir', r.filePaths[0]);
+  return srv.runBackup('manual');
 }
 function scheduleBackups() {
   const check = () => {
@@ -224,6 +257,7 @@ app.whenReady().then(async () => {
       dataDir: path.join(userData(), 'data'), appDir: APP_DIR, port: PORT, version: app.getVersion(),
       hooks: {
         print, printers, backup, restore,
+        pickCloud,
         openBackups: () => { fs.mkdirSync(backupDir(), { recursive: true }); shell.openPath(backupDir()); },
         updateStatus: () => updateState,
         installUpdate: () => { if (installUpdate) { app.isQuitting = true; installUpdate.install(); } },

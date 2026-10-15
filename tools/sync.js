@@ -116,10 +116,11 @@ function sysView(){
       <button class="btn out full" data-act="printtest">${I.print}Printo një faturë prove</button>
     </section>`:''}
     <section class="box"><h3>Backup</h3>
-      <p class="sy-p">Çdo natë dhe pas çdo mbylljeje të ditës bëhet një kopje e të dhënave në këtë kompjuter${b&&b.onedrive?' dhe në OneDrive':''}.</p>
+      <p class="sy-p">Çdo natë dhe pas çdo mbylljeje të ditës bëhet një kopje e të dhënave në këtë kompjuter${b&&b.cloud?` dhe në ${esc(b.cloudName||'Google Drive')}`:''}. Ruhen kopjet e 30 ditëve të fundit, më të vjetrat fshihen.</p>
       <div class="sy-r"><span>E fundit</span><b>${b?when(b.at):'Ende asnjë'}</b></div>
-      ${b&&b.onedrive?`<div class="sy-r"><span>OneDrive</span><b class="ok">Po</b></div>`:`<div class="sy-r"><span>OneDrive</span><b class="warn">Jo, hyr në OneDrive në këtë PC</b></div>`}
+      ${b&&b.cloud?`<div class="sy-r"><span>${esc(b.cloudName||'Google Drive')}</span><b class="ok">Po</b></div>`:`<div class="sy-r"><span>Google Drive</span><b class="warn">Jo, instalo Google Drive dhe hyr me Gmail-in e lokalit</b></div>`}
       ${BOOT.local?`<div class="btns"><button class="btn out" data-act="backupnow">${I.dl}Bëj backup tani</button><button class="btn out" data-act="openbackups">Hap dosjen</button></div>
+      <button class="link-btn" data-act="pickcloud">Zgjidh dosjen e Google Drive…</button>
       <button class="link-btn" data-act="restore">Rikthe të dhënat nga një backup…</button>`:''}
     </section>
     <section class="box"><h3>Qasja nga larg</h3>
@@ -155,6 +156,7 @@ document.addEventListener('click',async e=>{
   if(a==='backupnow'){ toast('Po bëhet backup…'); const r=await api('/api/local/backup',{}); toast(r.ok?'Backup u krye':'Backup dështoi: '+(r.error||'')); if(r.ok){ INFO=await api('/api/info'); render(); } }
   if(a==='openbackups') api('/api/local/open-backups',{});
   if(a==='restore') api('/api/local/restore',{}).then(r=>{ if(r&&r.error) toast(r.error); });
+  if(a==='pickcloud'){ api('/api/local/pick-cloud',{}).then(r=>{ if(r&&r.cloud) toast(`Backup-i u ruajt në ${r.cloudName||'Google Drive'}`); }).catch(()=>{}); return; }
   if(a==='installupdate') api('/api/local/install-update',{});
   if(a==='checkupdate'){ api('/api/local/check-update',{}); toast('Po kontrollohet për version të ri…'); }
   if(a==='logout'){ await api('/api/logout',{}); location.href='/login'; }
