@@ -1,0 +1,72 @@
+{
+  "name": "coffee-orders",
+  "version": "1.0.0",
+  "description": "Sistemi i porosive të brendshme për kafiterinë",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "node server/dev.js",
+    "build:ui": "python3 tools/build-ui.py",
+    "dist": "electron-builder --win --x64",
+    "release": "electron-builder --win --x64 --publish always"
+  },
+  "author": "Coffee Internal Orders",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^11.10.0",
+    "electron-updater": "^6.8.9"
+  },
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8"
+  },
+  "productName": "Coffee Internal Orders",
+  "build": {
+    "appId": "com.coffeeorders.internal",
+    "productName": "Coffee Internal Orders",
+    "artifactName": "Coffee-Internal-Orders-Setup-${version}.${ext}",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron/**",
+      "server/**",
+      "app/**",
+      "package.json",
+      "!server/dev.js"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Coffee Internal Orders",
+      "runAfterFinish": true
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "hidajetbeqaj2212-ops",
+        "repo": "coffee-orders",
+        "releaseType": "release"
+      }
+    ],
+    "copyright": "Copyright © 2026 Coffee Internal Orders"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hidajetbeqaj2212-ops/coffee-orders"
+  }
+}
