@@ -135,7 +135,7 @@ function sysView(){
     <section class="box"><h3>Përditësimet</h3>
       <div class="sy-r"><span>Versioni</span><b>${esc(INFO.version||'')}</b></div>
       <div class="sy-r"><span>Gjendja</span><b>${up?esc(up.text||''):'Kontrollohet automatikisht'}</b></div>
-      ${BOOT.local&&up&&up.ready?`<button class="btn pri full" data-act="installupdate">Instalo tani dhe rindiz</button>`:''}
+      ${BOOT.local&&up&&up.ready?`<button class="btn pri full" data-act="installupdate">Instalo tani dhe rindiz</button>`:BOOT.local?`<button class="btn out full" data-act="checkupdate">Kontrollo për version të ri</button>`:''}
     </section>
   </div>`;
 }
@@ -156,6 +156,7 @@ document.addEventListener('click',async e=>{
   if(a==='openbackups') api('/api/local/open-backups',{});
   if(a==='restore') api('/api/local/restore',{}).then(r=>{ if(r&&r.error) toast(r.error); });
   if(a==='installupdate') api('/api/local/install-update',{});
+  if(a==='checkupdate'){ api('/api/local/check-update',{}); toast('Po kontrollohet për version të ri…'); }
   if(a==='logout'){ await api('/api/logout',{}); location.href='/login'; }
 });
 async function backupBeforeReset(){ try{ const r=await api(BOOT.local?'/api/local/backup':'/api/backup',{}); return !!(r&&r.ok); }catch(e){ return false; } }

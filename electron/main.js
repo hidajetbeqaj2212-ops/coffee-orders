@@ -172,8 +172,8 @@ function setupUpdates() {
   autoUpdater.on('error', e => set({ text: 'Nuk u kontrollua (pa internet?)', ready: false }));
   const check = () => autoUpdater.checkForUpdates().catch(() => {});
   setTimeout(check, 15 * 1000);
-  setInterval(check, 4 * 3600 * 1000);
-  return () => autoUpdater.quitAndInstall(true, true);
+  setInterval(check, 30 * 60 * 1000); // every 30 minutes, so a new version reaches the bar the same day
+  return { install: () => autoUpdater.quitAndInstall(true, true), check };
 }
 
 /* ---------- window ---------- */
@@ -226,7 +226,8 @@ app.whenReady().then(async () => {
         print, printers, backup, restore,
         openBackups: () => { fs.mkdirSync(backupDir(), { recursive: true }); shell.openPath(backupDir()); },
         updateStatus: () => updateState,
-        installUpdate: () => { if (installUpdate) { app.isQuitting = true; installUpdate(); } },
+        installUpdate: () => { if (installUpdate) { app.isQuitting = true; installUpdate.install(); } },
+        checkUpdate: () => { if (installUpdate) installUpdate.check(); },
         onOps: (ops) => { if (ops.some(o => o.coll === 'closings' && o.data)) srv.runBackup('close'); },
       },
     });

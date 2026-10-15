@@ -152,6 +152,7 @@ function startServer({ dataDir, appDir, port = 4848, host = '0.0.0.0', hooks = {
         if (p === '/api/local/open-backups') { if (hooks.openBackups) hooks.openBackups(); return send(res, 200, { ok: true }); }
         if (p === '/api/local/restore') { if (hooks.restore) return send(res, 200, await hooks.restore()); return send(res, 200, { ok: false }); }
         if (p === '/api/local/install-update') { if (hooks.installUpdate) hooks.installUpdate(); return send(res, 200, { ok: true }); }
+        if (p === '/api/local/check-update') { if (hooks.checkUpdate) hooks.checkUpdate(); return send(res, 200, { ok: true }); }
         return send(res, 404, { error: 'not found' });
       }
 
